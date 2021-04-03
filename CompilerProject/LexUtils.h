@@ -61,6 +61,16 @@ vector<vector<string>> csvTo2DArray(string csvFile) {
 	return scanningTable;
 }
 
+void matrixPrintString(vector<vector<string>> matrix) {
+	for (int i = 0; i < matrix.size() - 1; i++) {
+		cout << endl;
+		for (int j = 0; j < matrix.size(); j++) {
+			cout << matrix[i][j] << ", ";
+		}
+	}
+	cout << endl << endl;
+}
+
 bool isKeyword(string str) {
 	if (str == "CONST" || str == "IF" || str == "VAR" || str == "THEN" || str == "PROCEDURE" || str == "WHILE" || str == "CALL" || str == "DO" || str == "ODD" || str == "CLASS")
 		return true;
@@ -71,6 +81,14 @@ bool isKeyword(string str) {
 bool isOperator(string str) {
 	if (str == "=" || str == "," || str == ";" || str == "+" || str == "-" || str == "*" || str == "/" || str == "(" || str == ")" || str == "<" || str == ">" || str == "{" || str == "}" || str == "==" || str == ">=" || str == "<=" || str == "!=" || str == "/*" || str == "*/")
 		return true;
+	else
+		return false;
+}
+
+bool isDelimiter(char ch) {
+	if (ch == ',' || ch == ';' || ch == '(' || ch == ')' || ch == '[' || ch == ']' || ch == '{' || ch == '}') {
+		return true;
+	}
 	else
 		return false;
 }

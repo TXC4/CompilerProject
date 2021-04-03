@@ -31,4 +31,9 @@
       <Filter>Resources</Filter>
     </Text>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\table.xlsx">
+      <Filter>Resources</Filter>
+    </None>
+  </ItemGroup>
 </Project>
