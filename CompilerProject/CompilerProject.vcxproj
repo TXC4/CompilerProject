@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CodeGen.h" />
     <ClInclude Include="LexUtils.h" />
     <ClInclude Include="Step1Lex.h" />
   </ItemGroup>
@@ -146,6 +147,7 @@
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="Resources\instructions.txt" />
     <Text Include="Resources\Source.txt" />
   </ItemGroup>
   <ItemGroup>

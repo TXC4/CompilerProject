@@ -20,6 +20,9 @@
     <ClInclude Include="LexUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CodeGen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
@@ -28,6 +31,9 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="Resources\Source.txt">
+      <Filter>Resources</Filter>
+    </Text>
+    <Text Include="Resources\instructions.txt">
       <Filter>Resources</Filter>
     </Text>
   </ItemGroup>

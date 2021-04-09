@@ -208,8 +208,6 @@ vector<Token> buildSymbolTable(string sourceCode) {
 			thisToken = "";
 		}
 	}
-
-	
 	return symbolTable;
 }
 
@@ -217,7 +215,8 @@ vector<Token> buildSymbolTable(string sourceCode) {
 
 void lex() {
 	vector<Token> symbolTable = buildSymbolTable(readFile());
+	cout << "Symbol Table Symbols: ";
 	for (int i = 0; i < symbolTable.size(); i++) {
-		cout << symbolTable[i].symbol << ", ";
+		cout <<  symbolTable[i].symbol << ", ";
 	}
 }
