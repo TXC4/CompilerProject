@@ -35,14 +35,18 @@ vector<vector<int>> stateTable = {
 struct Token {
 	string symbol;
 	string type;
-	int address;
-	int value;
+	string address;
+	int value = -1;
 	string segment;
+	bool isEmpty = true;
+
+	Token() {};
 
 	Token(string symbolArg, string typeArg, string segmentArg) {
 		symbol = symbolArg;
 		type = typeArg;
 		segment = segmentArg;
+		isEmpty = false;
 	}
 };
 
@@ -111,9 +115,19 @@ string litOrVar(int currentState, string token, vector<vector<string>> automataT
 	}
 }
 
-vector<Token> symbolTable = {};
+//vector<Token> symbolTable = {};
+Token symbolTable[1000];
+int symbolTableTop = 0;
+
+int pushToSymbolTable(Token newToken) {
+	symbolTable[symbolTableTop] = newToken;
+	symbolTableTop++;
+	return symbolTableTop - 1;
+}
+
 int currentState = 0;
 string thisToken = "";
+int tokenToAssign;
 
 void buildTable() {
 	if (thisToken != "") {
@@ -135,27 +149,30 @@ void buildTable() {
 		case 4:
 			if (isLetter(thisToken[0])) {
 				currentState = stateTable[currentState][indexOf("<var>", stateTableColumns)];
-				symbolTable.push_back(Token(thisToken, "<const>", "DS"));
+				Token t = Token(thisToken, "<const>", "DS");
+				tokenToAssign = pushToSymbolTable(t);
 			}
 			break;
-		case 5: currentState = stateTable[currentState][indexOf(thisToken, stateTableColumns)]; break;
+		case 5: 
+			currentState = stateTable[currentState][indexOf(thisToken, stateTableColumns)]; break;
 		case 6:
 			if (isDigit(thisToken[0])) {
 				currentState = stateTable[currentState][indexOf("<int>", stateTableColumns)];
+				symbolTable[tokenToAssign].value = stoi(thisToken);
 			}
 			break;
 		case 7: currentState = stateTable[currentState][indexOf(thisToken, stateTableColumns)]; break;
 		case 8:
 			if (isLetter(thisToken[0])) {
 				currentState = stateTable[currentState][indexOf("<var>", stateTableColumns)];
-				symbolTable.push_back(Token(thisToken, "<var>", "DS"));
+				pushToSymbolTable(Token(thisToken, "<var>", "DS"));
 			}
 			break;
 		case 9: currentState = stateTable[currentState][indexOf(thisToken, stateTableColumns)]; break;
 		case 10:
 			if (isDigit(thisToken[0])) {
 				currentState = stateTable[currentState][indexOf("<int>", stateTableColumns)];
-				symbolTable.push_back(Token(thisToken, "<int>", "DS"));
+				pushToSymbolTable(Token(thisToken, "<int>", "DS"));
 			}
 			else if (thisToken == "~") {
 				currentState = stateTable[currentState][indexOf("EOF", stateTableColumns)];
@@ -181,7 +198,7 @@ void buildTable() {
 	}
 }
 
-vector<Token> buildSymbolTable(string sourceCode) {
+void buildSymbolTable(string sourceCode) {
 	//read in characters
 	for (int i = 0; i < sourceCode.size(); i++) {
 		cout << sourceCode[i];
@@ -208,15 +225,14 @@ vector<Token> buildSymbolTable(string sourceCode) {
 			thisToken = "";
 		}
 	}
-	return symbolTable;
+	for (int i = 0; i < sizeof(symbolTable)/sizeof(Token); i++) {
+		if (!symbolTable[i].isEmpty)
+			cout << symbolTable[i].symbol << ": " << symbolTable[i].value << ": " << symbolTable[i].segment << endl;
+	}
 }
 
 
 
 void lex() {
-	vector<Token> symbolTable = buildSymbolTable(readFile());
-	cout << "Symbol Table Symbols: ";
-	for (int i = 0; i < symbolTable.size(); i++) {
-		cout <<  symbolTable[i].symbol << ", ";
-	}
+	buildSymbolTable(readFile());
 }
