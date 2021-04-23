@@ -225,9 +225,12 @@ void buildSymbolTable(string sourceCode) {
 			thisToken = "";
 		}
 	}
+	//assign address to symbol as string and print symbol table
 	for (int i = 0; i < sizeof(symbolTable)/sizeof(Token); i++) {
-		if (!symbolTable[i].isEmpty)
-			cout << symbolTable[i].symbol << ": " << symbolTable[i].value << ": " << symbolTable[i].segment << endl;
+		if (!symbolTable[i].isEmpty) {
+			symbolTable[i].address = to_string((int)&symbolTable[i]);
+			cout << symbolTable[i].symbol << " - " << symbolTable[i].value << " - " << symbolTable[i].segment << " - " << symbolTable[i].address << endl;
+		}
 	}
 }
 
@@ -235,4 +238,9 @@ void buildSymbolTable(string sourceCode) {
 
 void lex() {
 	buildSymbolTable(readFile());
+	int x = (int)&symbolTable[0];
+	string a = to_string(x);
+	int y = (int)&symbolTable[1];
+	string b = to_string(y);
+	cout << a << ", " << b;
 }
