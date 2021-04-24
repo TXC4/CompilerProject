@@ -150,6 +150,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="Resources\instructions.txt" />
+    <Text Include="Resources\lexToParse.txt" />
     <Text Include="Resources\Source.txt" />
   </ItemGroup>
   <ItemGroup>

@@ -10,6 +10,7 @@ using namespace std;
 
 string textFile = "Resources/Source.txt";
 string csvFile = "Resources/table.xlsx";
+string toParseText = "Resources/lexToParse.txt";
 
 vector<string> stateTableColumns =
 { "CONST", "IF", "VAR", "THEN", "PROCEDURE", "WHILE", "CALL", "DO", "ODD", "CLASS", "=", ",", ";",
@@ -128,8 +129,11 @@ int pushToSymbolTable(Token newToken) {
 int currentState = 0;
 string thisToken = "";
 int tokenToAssign;
+bool writeToParser = false;
+vector<string> parserTokens = {};
 
-void buildTable() {
+
+void analyze() {
 	if (thisToken != "") {
 		cout << "current state: " << currentState << endl;
 		switch (currentState) {
@@ -143,8 +147,11 @@ void buildTable() {
 				currentState = stateTable[currentState][indexOf(thisToken, stateTableColumns)];
 			}
 			else if (isLetter(thisToken[0])) {
+				//all reserved words lead to state 10 so <var> is just used for simplicity
 				currentState = stateTable[currentState][indexOf("<var>", stateTableColumns)];
+				writeToParser = true;
 			}
+			
 			break;
 		case 4:
 			if (isLetter(thisToken[0])) {
@@ -196,6 +203,9 @@ void buildTable() {
 		if (currentState == -1)
 			cout << "ERROR state -1\n";
 	}
+	if (writeToParser && (thisToken != "~" && thisToken != "}")) {
+		parserTokens.push_back(thisToken);
+	}
 }
 
 void buildSymbolTable(string sourceCode) {
@@ -206,7 +216,7 @@ void buildSymbolTable(string sourceCode) {
 	for (int i = 0; i < sourceCode.size(); i++) {
 		if (sourceCode[i] == ' ' && thisToken != "") {
 			cout << thisToken << endl;
-			buildTable();
+			analyze();
 			thisToken = "";
 		} 
 		else if (sourceCode[i] != ' '){
@@ -215,32 +225,32 @@ void buildSymbolTable(string sourceCode) {
 
 		if (isDelimiter(sourceCode[i])) {
 			cout << sourceCode[i] << endl;
-			buildTable();
+			analyze();
 			thisToken = "";
 		}
 		
 		if (isDelimiter(sourceCode[i + 1]) && thisToken != "") {
 			cout << thisToken << endl;
-			buildTable();
+			analyze();
 			thisToken = "";
 		}
 	}
-	//assign address to symbol as string and print symbol table
+
+	//assign address to token object as string and print symbol table
 	for (int i = 0; i < sizeof(symbolTable)/sizeof(Token); i++) {
 		if (!symbolTable[i].isEmpty) {
 			symbolTable[i].address = to_string((int)&symbolTable[i]);
-			cout << symbolTable[i].symbol << " - " << symbolTable[i].value << " - " << symbolTable[i].segment << " - " << symbolTable[i].address << endl;
+			cout << symbolTable[i].symbol << "-" << symbolTable[i].type << " - " << symbolTable[i].value << " - " << symbolTable[i].segment << " - " << symbolTable[i].address << endl;
 		}
 	}
 }
 
-
-
 void lex() {
 	buildSymbolTable(readFile());
-	int x = (int)&symbolTable[0];
-	string a = to_string(x);
-	int y = (int)&symbolTable[1];
-	string b = to_string(y);
-	cout << a << ", " << b;
+
+	cout << "Code to parse: \n";
+	for (int i = 0; i < parserTokens.size(); i++) {
+		cout << parserTokens[i] << ", ";
+	}
+	writeToParseFile(parserTokens, toParseText);
 }

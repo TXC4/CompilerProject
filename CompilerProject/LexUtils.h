@@ -25,6 +25,14 @@ void print2DVector(vector<vector<string>> scanningTable) {
 	}
 }
 
+void writeToParseFile(vector<string> tokenStream, string fileName) {
+	ofstream fileStream(fileName);
+	for (int i = 0; i < tokenStream.size(); i++) {
+		fileStream << tokenStream[i] << "\n";
+	}
+	fileStream.close();
+}
+
 //parses csv file containing table driven lexical analyzer into 2D vector
 vector<vector<string>> csvTo2DArray(string csvFile) {
 	vector<vector<string>>scanningTable;

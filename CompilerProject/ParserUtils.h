@@ -1,8 +1,8 @@
 #pragma once
-
+#include <fstream>
 
 namespace parserUtils {
-
+	
 	vector<string> operatorList = { "+", "-", "*", "/", "(", ")", ";", "{", "}", ">", ">=", "while", "=" };
 	bool isOperator(string input) {
 		for (int i = 0; i < operatorList.size(); i++) {
@@ -86,5 +86,21 @@ namespace parserUtils {
 			}
 		}
 		return t1;
+	}
+
+	vector<string> readFromLex() {
+		vector<string> tokenStream = {};
+		ifstream inFile;
+		inFile.open("Resources/lexToParse.txt", ios::in);
+		if (inFile.is_open()) {
+			string newString;
+			while (getline(inFile, newString)) {
+				tokenStream.push_back(newString);
+			}
+		}
+		else {
+			cout << "Error, failed to open file from scanner" << endl;
+		}
+		return tokenStream;
 	}
 }

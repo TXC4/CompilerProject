@@ -109,7 +109,6 @@ void parse() {
 		{"<","<","<","<","<", "",">", "", "", "", "", "", ""},
 	};
 
-	vector<string> tokenString = { "1", "+", "2", ";" };
-
+	vector<string> tokenString = readFromLex();
 	operatorPrecedenceParser(completeTable, completeTableHeader, tokenString);
 }
