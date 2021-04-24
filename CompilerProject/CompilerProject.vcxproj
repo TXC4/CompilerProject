@@ -152,6 +152,7 @@
     <Text Include="Resources\instructions.txt" />
     <Text Include="Resources\lexToParse.txt" />
     <Text Include="Resources\Source.txt" />
+    <Text Include="Resources\symbolTable.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\table.xlsx" />

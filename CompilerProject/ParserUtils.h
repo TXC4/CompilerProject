@@ -1,7 +1,27 @@
 #pragma once
+#include "LexUtils.h"
+
 #include <fstream>
 
 namespace parserUtils {
+
+	struct ParseToken {
+		string symbol;
+		string type;
+		string address;
+		int value = -1;
+		string segment;
+		bool isEmpty = true;
+
+		ParseToken() {};
+
+		ParseToken(string symbolArg, string typeArg, string segmentArg) {
+			symbol = symbolArg;
+			type = typeArg;
+			segment = segmentArg;
+			isEmpty = false;
+		}
+	};
 	
 	vector<string> operatorList = { "+", "-", "*", "/", "(", ")", ";", "{", "}", ">", ">=", "while", "=" };
 	bool isOperator(string input) {
@@ -36,6 +56,12 @@ namespace parserUtils {
 		bool tb1 = false;
 		for (int i = 0; i < thisPop.size(); i++) {
 			if (isArithmeticOp(thisPop[i])) {
+				// check if thisPop[0] or thisPop[2] is var or const
+				// if so we will search the symbol table for it
+				// then get the value at that location
+				if (isLetter(thisPop[0][0])) {
+
+				}
 				cout << "Arithmetic Operation: " << thisPop[2] << thisPop[1] << thisPop[0] << endl;
 				switch (thisPop[i][0]) {
 				case '+':
@@ -102,5 +128,53 @@ namespace parserUtils {
 			cout << "Error, failed to open file from scanner" << endl;
 		}
 		return tokenStream;
+	}
+
+	vector<ParseToken> readSymbolTable() {
+		vector<ParseToken> symbolTable = {};
+		ParseToken newToken;
+		string thisString = "";
+		char thisChar;
+		int commaCount = 0;
+		ifstream inFile;
+		inFile.open("Resources/symbolTable.txt", ios::in);
+		if (inFile.is_open()) {
+			while (inFile >> noskipws >> thisChar) {
+				cout << thisChar;
+				if ((thisChar != ',') && (thisChar != '\n')) {
+					thisString.push_back(thisChar);
+				}
+				else if (thisChar == ',' || thisChar == '\n') {
+					switch (commaCount) {
+					case 0:
+						newToken.symbol = thisString;
+						break;
+					case 1:
+						newToken.type = thisString;
+						break;
+					case 2:
+						newToken.value = stoi(thisString);
+						break;
+					case 3:
+						newToken.segment = thisString;
+						break;
+					case 4:
+						newToken.address = thisString;
+						break;
+					default:
+						cout << "No case match reading symbol table\n";
+						break;
+					}
+					thisString = "";
+					commaCount++;
+				}
+				if (thisChar == '\n') {
+					commaCount = 0;
+					symbolTable.push_back(newToken);
+					thisString = "";
+				}
+			}
+		}
+		return symbolTable;
 	}
 }

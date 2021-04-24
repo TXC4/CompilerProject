@@ -45,6 +45,9 @@
     <Text Include="Resources\lexToParse.txt">
       <Filter>Resources</Filter>
     </Text>
+    <Text Include="Resources\symbolTable.txt">
+      <Filter>Resources</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\table.xlsx">

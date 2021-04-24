@@ -236,13 +236,16 @@ void buildSymbolTable(string sourceCode) {
 		}
 	}
 
-	//assign address to token object as string and print symbol table
+	//assign address to token object as string and print & write symbol table
+	ofstream outFile("Resources/symbolTable.txt");
 	for (int i = 0; i < sizeof(symbolTable)/sizeof(Token); i++) {
 		if (!symbolTable[i].isEmpty) {
 			symbolTable[i].address = to_string((int)&symbolTable[i]);
 			cout << symbolTable[i].symbol << "-" << symbolTable[i].type << " - " << symbolTable[i].value << " - " << symbolTable[i].segment << " - " << symbolTable[i].address << endl;
+			outFile << symbolTable[i].symbol << "," << symbolTable[i].type << "," << symbolTable[i].value << "," << symbolTable[i].segment << "," << symbolTable[i].address << "\n";
 		}
 	}
+	outFile.close();
 }
 
 void lex() {
@@ -252,5 +255,6 @@ void lex() {
 	for (int i = 0; i < parserTokens.size(); i++) {
 		cout << parserTokens[i] << ", ";
 	}
+	cout << endl;
 	writeToParseFile(parserTokens, toParseText);
 }

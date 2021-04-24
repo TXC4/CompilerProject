@@ -108,7 +108,12 @@ void parse() {
 		{ "", "", "","<", "", "",">", "", "", "", "", "", ""},
 		{"<","<","<","<","<", "",">", "", "", "", "", "", ""},
 	};
-
 	vector<string> tokenString = readFromLex();
 	operatorPrecedenceParser(completeTable, completeTableHeader, tokenString);
+
+	vector<ParseToken> symbolTable = readSymbolTable();
+	cout << "SYMBOL TABLE AS READ TO PARSER.H\n";
+	for (int i = 0; i < symbolTable.size(); i++) {
+		cout << symbolTable[i].symbol << " - " << symbolTable[i].type << " - " << symbolTable[i].value << " - " << symbolTable[i].segment << " - " << symbolTable[i].address << endl;
+	}
 }
