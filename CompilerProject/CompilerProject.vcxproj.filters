@@ -14,13 +14,19 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Step1Lex.h">
+    <ClInclude Include="Lex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LexUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CodeGen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ParserUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Parser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

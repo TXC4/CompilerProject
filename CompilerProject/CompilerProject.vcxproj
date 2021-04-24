@@ -141,7 +141,9 @@
   <ItemGroup>
     <ClInclude Include="CodeGen.h" />
     <ClInclude Include="LexUtils.h" />
-    <ClInclude Include="Step1Lex.h" />
+    <ClInclude Include="Parser.h" />
+    <ClInclude Include="ParserUtils.h" />
+    <ClInclude Include="Lex.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp" />
