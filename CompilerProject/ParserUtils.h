@@ -159,7 +159,10 @@ namespace parserUtils {
 				// quad generation
 				string tempStr = "";
 				tempStr.push_back(thisPop[i][0]);
-				quadLine = tempStr + "," + thisPop[2] + "," + thisPop[0] + "," + "T" + to_string(tempCount);
+				if (tempStr != "=")
+					quadLine = tempStr + "," + thisPop[2] + "," + thisPop[0] + "," + "T" + to_string(tempCount);
+				else
+					quadLine = tempStr + "," + thisPop[2] + "," + thisPop[0] + "," + "~";
 				cout << "QUADLINE: " << quadLine << endl;
 				writeQuads(quadLine);
 

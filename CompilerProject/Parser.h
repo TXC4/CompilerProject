@@ -81,11 +81,12 @@ bool operatorPrecedenceParser(vector<vector<string>> table, vector<string> table
 				lastPushedOp = tokenStack.back();
 				if (thisPop[1] != "=") {
 					tokenStack.push_back(to_string(operations(thisPop, symbolTable, tempCount)));
+					tempCount++;
 				}
 				else {
 					operations(thisPop, symbolTable, tempCount);
 				}
-				tempCount++;
+				
 				i--;
 			}
 			else if (relation == "<" || relation == "=") {
