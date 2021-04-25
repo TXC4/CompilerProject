@@ -14,14 +14,14 @@ bool operatorPrecedenceParser(vector<vector<string>> table, vector<string> table
 	deque<string> tokenStack;
 	string lastPushedOp = "";
 
-	tokenStack.push_back(";");
-	lastPushedOp = ";";
-	int tempCount = 0;
-
 	//clear Quads.txt
 	ofstream out;
 	out.open("Resources/Quads.txt", ofstream::out | ofstream::trunc);
 	out.close();
+
+	tokenStack.push_back(";");
+	lastPushedOp = ";";
+	int tempCount = 0;
 
 	for (int i = 0; i < tokenString.size(); i++) {
 		if (!parserUtils::isOperator(tokenString[i])) {
@@ -130,7 +130,7 @@ void parse() {
 
 	vector<string> tokenString = readFromLex();
 	operatorPrecedenceParser(completeTable, completeTableHeader, tokenString, symbolTable);
-
+	assemblyInitialization(symbolTable);
 	
 	cout << "SYMBOL TABLE AS READ TO PARSER.H\n";
 	for (int i = 0; i < symbolTable.size(); i++) {

@@ -78,14 +78,27 @@ namespace parserUtils {
 		fstream out;
 		string fileName = "Resources/Quads.txt";
 		out.open(fileName, ios_base::app | ios::in);
-		if (line != "~") {
-			if (out.is_open())
-				out << line << "\n";
-			else
-				cout << "Error opening " << fileName << endl;
-		}
-		else {
-			out.close();
+		if (out.is_open())
+			out << line << "\n";
+		else
+			cout << "Error opening " << fileName << endl;
+		out.close();
+	}
+
+	void assemblyInitialization(vector<ParseToken> symbolTable) {
+		for (int i = 0; i < symbolTable.size(); i++) {
+			// initialize const
+			string newStr = "";
+			if (symbolTable[i].value != -1) {
+				newStr = "data,=," + symbolTable[i].symbol + "," + to_string(symbolTable[i].value);
+			}
+			// declare var
+			else {
+				if (symbolTable[i].type == "<var>") {
+					newStr = "bss,resb," + symbolTable[i].symbol;
+				}
+			}
+			writeQuads(newStr);
 		}
 	}
 
