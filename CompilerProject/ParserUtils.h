@@ -74,7 +74,22 @@ namespace parserUtils {
 		}
 	}
 
-	int operations(vector<string> thisPop, vector<ParseToken> &symbolTable) {
+	void writeQuads(string line) {
+		fstream out;
+		string fileName = "Resources/Quads.txt";
+		out.open(fileName, ios_base::app | ios::in);
+		if (line != "~") {
+			if (out.is_open())
+				out << line << "\n";
+			else
+				cout << "Error opening " << fileName << endl;
+		}
+		else {
+			out.close();
+		}
+	}
+
+	int operations(vector<string> thisPop, vector<ParseToken> &symbolTable, int tempCount) {
 		string opType = "";
 		int t1 = -2;
 		bool tb1 = false;
@@ -91,17 +106,17 @@ namespace parserUtils {
 				string arg2 = thisPop[0];
 				
 				if (isLetter(arg1[0]) && thisPop[i][0] != '=') {
-					cout << "LETTER FOUND " << arg1 << endl;;
 					arg1 = to_string(getValue(arg1, symbolTable));
 					cout << "arg1: " << arg1 << endl;
 				}
 				if (isLetter(arg2[0]) && thisPop[i][0] != '=') {
-					cout << "LETTER FOUND " << arg2 << endl;
 					arg2 = to_string(getValue(arg2, symbolTable));
 					cout << "arg2: " << arg2 << endl;
 				}
 
 				cout << "Arithmetic Operation: " << thisPop[2] << thisPop[1] << thisPop[0] << endl;
+				//compiles to c++ for log then writes out quads for x86
+				string quadLine = "";
 				switch (thisPop[i][0]) {
 				case '+':
 					cout << "Which is: " << arg1.c_str() << " + " << atoi(arg2.c_str()) << endl;
@@ -124,14 +139,16 @@ namespace parserUtils {
 					temp = atoi(arg2.c_str());
 					setValue(arg1, symbolTable, temp);
 					break;
-					//why?
-				case '>':
-					tb1 = thisPop[0] > thisPop[2];
-					break;
 				default:
 					t1 = -1;
 					break;
 				}
+				// quad generation
+				string tempStr = "";
+				tempStr.push_back(thisPop[i][0]);
+				quadLine = tempStr + "," + thisPop[2] + "," + thisPop[0] + "," + "T" + to_string(tempCount);
+				cout << "QUADLINE: " << quadLine << endl;
+				writeQuads(quadLine);
 
 				cout << "t1 = " << t1 << endl;
 				return t1;
@@ -144,12 +161,10 @@ namespace parserUtils {
 				string arg2 = thisPop[0];
 
 				if (isLetter(arg1[0])) {
-					cout << "LETTER FOUND " << arg1 << endl;;
 					arg1 = to_string(getValue(arg1, symbolTable));
 					cout << "arg1: " << arg1 << endl;
 				}
 				if (isLetter(arg2[0])) {
-					cout << "LETTER FOUND " << arg2 << endl;
 					arg2 = to_string(getValue(arg2, symbolTable));
 					cout << "arg2: " << arg2 << endl;
 				}
@@ -157,7 +172,7 @@ namespace parserUtils {
 				cout << "Relational Operation: " << thisPop[2] << thisPop[1] << thisPop[0] << endl;
 				switch (thisPop[i][0]) {
 				case '>':
-					tb1 = thisPop[2] > thisPop[0];
+					tb1 = atoi(arg1.c_str()) / atoi(arg2.c_str());
 					break;
 				}
 				cout << "tb1 = " << tb1 << endl;

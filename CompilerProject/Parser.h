@@ -7,8 +7,6 @@
 #include <deque>
 #include <sstream>
 
-//TESTING
-
 using namespace std;
 using namespace parserUtils;
 
@@ -18,6 +16,13 @@ bool operatorPrecedenceParser(vector<vector<string>> table, vector<string> table
 
 	tokenStack.push_back(";");
 	lastPushedOp = ";";
+	int tempCount = 0;
+
+	//clear Quads.txt
+	ofstream out;
+	out.open("Resources/Quads.txt", ofstream::out | ofstream::trunc);
+	out.close();
+
 	for (int i = 0; i < tokenString.size(); i++) {
 		if (!parserUtils::isOperator(tokenString[i])) {
 			tokenStack.push_back(tokenString[i]);
@@ -27,6 +32,7 @@ bool operatorPrecedenceParser(vector<vector<string>> table, vector<string> table
 			string relation = "";
 			int lastOpIndex = 6;
 			int nextOpIndex = -1;
+			
 			for (int j = 0; j < tableHeader.size(); j++) {
 				if (lastPushedOp == tableHeader[j]) {
 					lastOpIndex = j;
@@ -39,11 +45,12 @@ bool operatorPrecedenceParser(vector<vector<string>> table, vector<string> table
 			relation = table[lastOpIndex][nextOpIndex];
 			cout << "Relation " << tableHeader[lastOpIndex] << " " << relation << " " << tableHeader[nextOpIndex] << endl;
 			vector<string> thisPop = {};
+			// ';' resets tempCount
+			if (lastOpIndex == 6)
+				tempCount = 0;
+			//reduce
 			if (relation == ">") {
 				cout << ">" << endl;
-				//reduce
-				//compiles in c++ for the log then generates quads to write out for x86
-				string quadLine = "";
 				if (isArithmeticOp(lastPushedOp) || isRelationalOp(lastPushedOp)) {
 					while (tokenStack.back() != lastPushedOp) {
 						thisPop.push_back(tokenStack.back());
@@ -73,11 +80,12 @@ bool operatorPrecedenceParser(vector<vector<string>> table, vector<string> table
 
 				lastPushedOp = tokenStack.back();
 				if (thisPop[1] != "=") {
-					tokenStack.push_back(to_string(operations(thisPop, symbolTable)));
+					tokenStack.push_back(to_string(operations(thisPop, symbolTable, tempCount)));
 				}
 				else {
-					operations(thisPop, symbolTable);
+					operations(thisPop, symbolTable, tempCount);
 				}
+				tempCount++;
 				i--;
 			}
 			else if (relation == "<" || relation == "=") {
