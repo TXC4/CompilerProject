@@ -3,6 +3,8 @@
 
 #include <fstream>
 
+
+
 namespace parserUtils {
 
 	struct ParseToken {
@@ -22,7 +24,11 @@ namespace parserUtils {
 			isEmpty = false;
 		}
 	};
+
 	
+	
+
+
 	vector<string> operatorList = { "+", "-", "*", "/", "(", ")", ";", "{", "}", ">", ">=", "while", "=" };
 	bool isOperator(string input) {
 		for (int i = 0; i < operatorList.size(); i++) {
@@ -33,7 +39,7 @@ namespace parserUtils {
 	}
 
 	bool isArithmeticOp(string input) {
-		vector<string> biOpList = { "+", "-", "*", "/" };
+		vector<string> biOpList = { "+", "-", "*", "/", "=" };
 		for (int i = 0; i < biOpList.size(); i++) {
 			if (input == biOpList[i])
 				return true;
@@ -50,37 +56,76 @@ namespace parserUtils {
 		return false;
 	}
 
-	int operations(vector<string>& thisPop) {
+	int getValue(string dataName, vector<ParseToken> symbolTable) {
+		for (int i = 0; i < symbolTable.size(); i++) {
+			if (symbolTable[i].symbol == dataName) {
+				cout << "gotten value: " << symbolTable[i].value << endl;
+				return symbolTable[i].value;
+			}
+		}
+		return -1;
+	}
+
+	void setValue(string dataName, vector<ParseToken> &symbolTable, int newVal) {
+		for (int i = 0; i < symbolTable.size(); i++) {
+			if (symbolTable[i].symbol == dataName) {
+				symbolTable[i].value = newVal;
+			}
+		}
+	}
+
+	int operations(vector<string> thisPop, vector<ParseToken> symbolTable) {
 		string opType = "";
 		int t1 = -2;
 		bool tb1 = false;
+
 		for (int i = 0; i < thisPop.size(); i++) {
+			
+			
 			if (isArithmeticOp(thisPop[i])) {
+				cout << "IS ARITHMETIC OP\n";
 				// check if thisPop[0] or thisPop[2] is var or const
 				// if so we will search the symbol table for it
-				// then get the value at that location
-				if (isLetter(thisPop[0][0])) {
-
+				// then get the value
+				string arg1 = thisPop[2];
+				string arg2 = thisPop[0];
+				
+				if (isLetter(arg1[0]) && thisPop[i][0] != '=') {
+					cout << "LETTER FOUND " << arg1 << endl;;
+					arg1 = to_string(getValue(arg1, symbolTable));
+					cout << "arg1: " << arg1 << endl;
 				}
+				if (isLetter(arg2[0]) && thisPop[i][0] != '=') {
+					cout << "LETTER FOUND " << arg2 << endl;
+					arg2 = to_string(getValue(arg2, symbolTable));
+					cout << "arg2: " << arg2 << endl;
+				}
+
 				cout << "Arithmetic Operation: " << thisPop[2] << thisPop[1] << thisPop[0] << endl;
 				switch (thisPop[i][0]) {
 				case '+':
-					t1 = atoi(thisPop[2].c_str()) + atoi(thisPop[0].c_str());
+					cout << "Which is: " << arg1.c_str() << " + " << atoi(arg2.c_str()) << endl;
+					t1 = atoi(arg1.c_str()) + atoi(arg2.c_str());
 					break;
 				case '*':
-					t1 = atoi(thisPop[2].c_str()) * atoi(thisPop[0].c_str());
+					cout << "Which is: " << arg1.c_str() << " * " << atoi(arg2.c_str()) << endl;
+					t1 = atoi(arg1.c_str()) * atoi(arg2.c_str());
 					break;
 				case '-':
-					t1 = atoi(thisPop[2].c_str()) - atoi(thisPop[0].c_str());
+					cout << "Which is: " << arg1.c_str() << " - " << atoi(arg2.c_str()) << endl;
+					t1 = atoi(arg1.c_str()) - atoi(arg2.c_str());
 					break;
 				case '/':
-					t1 = atoi(thisPop[2].c_str()) / atoi(thisPop[0].c_str());
+					cout << "Which is: " << arg1.c_str() << " / " << atoi(arg2.c_str()) << endl;
+					t1 = atoi(arg1.c_str()) / atoi(arg2.c_str());
 					break;
 				case '=':
+					cout << "TRYING TO RUN ASSIGNMENT\n";
 					int temp;
-					temp = atoi(thisPop[2].c_str());
-					thisPop[0] = to_string(temp);
+					temp = atoi(arg1.c_str());
+					setValue(arg1, symbolTable, temp);
 					break;
+					//why?
 				case '>':
 					tb1 = thisPop[0] > thisPop[2];
 					break;
@@ -93,6 +138,23 @@ namespace parserUtils {
 				return t1;
 			}
 			else if (isRelationalOp(thisPop[i])) {
+				// check if thisPop[0] or thisPop[2] is var or const
+				// if so we will search the symbol table for it
+				// then get the value
+				string arg1 = thisPop[2];
+				string arg2 = thisPop[0];
+
+				if (isLetter(arg1[0])) {
+					cout << "LETTER FOUND " << arg1 << endl;;
+					arg1 = to_string(getValue(arg1, symbolTable));
+					cout << "arg1: " << arg1 << endl;
+				}
+				if (isLetter(arg2[0])) {
+					cout << "LETTER FOUND " << arg2 << endl;
+					arg2 = to_string(getValue(arg2, symbolTable));
+					cout << "arg2: " << arg2 << endl;
+				}
+
 				cout << "Relational Operation: " << thisPop[2] << thisPop[1] << thisPop[0] << endl;
 				switch (thisPop[i][0]) {
 				case '>':
@@ -103,11 +165,11 @@ namespace parserUtils {
 				return tb1;
 			}
 			else if (thisPop[i] == ")") {
-				cout << "Operation: Popped parenthesis, left with '" << thisPop[1] << endl;
+				cout << "Operation: Popped parenthesis, left with " << thisPop[1] << endl;
 				t1 = atoi(thisPop[1].c_str());
 			}
 			else if (thisPop[i] == "}") {
-				cout << "Operation: Popped curly brackets, left with '" << thisPop[1] << endl;
+				cout << "Operation: Popped curly brackets, left with " << thisPop[1] << endl;
 				t1 = atoi(thisPop[1].c_str());
 			}
 		}
@@ -131,7 +193,7 @@ namespace parserUtils {
 	}
 
 	vector<ParseToken> readSymbolTable() {
-		vector<ParseToken> symbolTable = {};
+		vector<ParseToken> symbolTable;
 		ParseToken newToken;
 		string thisString = "";
 		char thisChar;
@@ -177,4 +239,5 @@ namespace parserUtils {
 		}
 		return symbolTable;
 	}
+	
 }

@@ -10,10 +10,10 @@
 using namespace std;
 using namespace parserUtils;
 
-
-bool operatorPrecedenceParser(vector<vector<string>> table, vector<string> tableHeader, vector<string> tokenString) {
+bool operatorPrecedenceParser(vector<vector<string>> table, vector<string> tableHeader, vector<string> tokenString, vector<ParseToken> symbolTable) {
 	deque<string> tokenStack;
 	string lastPushedOp = "";
+
 	tokenStack.push_back(";");
 	lastPushedOp = ";";
 	for (int i = 0; i < tokenString.size(); i++) {
@@ -68,7 +68,12 @@ bool operatorPrecedenceParser(vector<vector<string>> table, vector<string> table
 				}
 
 				lastPushedOp = tokenStack.back();
-				tokenStack.push_back(to_string(operations(thisPop)));
+				if (thisPop[1] != "=") {
+					tokenStack.push_back(to_string(operations(thisPop, symbolTable)));
+				}
+				else {
+					operations(thisPop, symbolTable);
+				}
 				i--;
 			}
 			else if (relation == "<" || relation == "=") {
@@ -92,6 +97,8 @@ bool operatorPrecedenceParser(vector<vector<string>> table, vector<string> table
 }
 
 void parse() {
+	vector<ParseToken> symbolTable = readSymbolTable();
+
 	vector<string> completeTableHeader = { "+", "-", "*", "/", "(", ")", ";", "{", "}", ">", ">=", "while", "=" };
 	vector<vector<string>> completeTable = {
 		{">",">","<","<","<",">",">", "",">", "", "", "", ""},
@@ -108,10 +115,11 @@ void parse() {
 		{ "", "", "","<", "", "",">", "", "", "", "", "", ""},
 		{"<","<","<","<","<", "",">", "", "", "", "", "", ""},
 	};
-	vector<string> tokenString = readFromLex();
-	operatorPrecedenceParser(completeTable, completeTableHeader, tokenString);
 
-	vector<ParseToken> symbolTable = readSymbolTable();
+	vector<string> tokenString = readFromLex();
+	operatorPrecedenceParser(completeTable, completeTableHeader, tokenString, symbolTable);
+
+	
 	cout << "SYMBOL TABLE AS READ TO PARSER.H\n";
 	for (int i = 0; i < symbolTable.size(); i++) {
 		cout << symbolTable[i].symbol << " - " << symbolTable[i].type << " - " << symbolTable[i].value << " - " << symbolTable[i].segment << " - " << symbolTable[i].address << endl;
