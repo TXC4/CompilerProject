@@ -74,7 +74,7 @@ namespace parserUtils {
 		}
 	}
 
-	int operations(vector<string> thisPop, vector<ParseToken> symbolTable) {
+	int operations(vector<string> thisPop, vector<ParseToken> &symbolTable) {
 		string opType = "";
 		int t1 = -2;
 		bool tb1 = false;
@@ -120,9 +120,8 @@ namespace parserUtils {
 					t1 = atoi(arg1.c_str()) / atoi(arg2.c_str());
 					break;
 				case '=':
-					cout << "TRYING TO RUN ASSIGNMENT\n";
 					int temp;
-					temp = atoi(arg1.c_str());
+					temp = atoi(arg2.c_str());
 					setValue(arg1, symbolTable, temp);
 					break;
 					//why?

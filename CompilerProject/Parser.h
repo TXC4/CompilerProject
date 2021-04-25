@@ -10,7 +10,7 @@
 using namespace std;
 using namespace parserUtils;
 
-bool operatorPrecedenceParser(vector<vector<string>> table, vector<string> tableHeader, vector<string> tokenString, vector<ParseToken> symbolTable) {
+bool operatorPrecedenceParser(vector<vector<string>> table, vector<string> tableHeader, vector<string> tokenString, vector<ParseToken> &symbolTable) {
 	deque<string> tokenStack;
 	string lastPushedOp = "";
 
