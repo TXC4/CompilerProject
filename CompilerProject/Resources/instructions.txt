@@ -1,3 +1,0 @@
-mov ax, [A]
-add ax, [B]
-mov [T1], ax

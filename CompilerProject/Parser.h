@@ -7,6 +7,8 @@
 #include <deque>
 #include <sstream>
 
+//TESTING
+
 using namespace std;
 using namespace parserUtils;
 
@@ -40,6 +42,8 @@ bool operatorPrecedenceParser(vector<vector<string>> table, vector<string> table
 			if (relation == ">") {
 				cout << ">" << endl;
 				//reduce
+				//compiles in c++ for the log then generates quads to write out for x86
+				string quadLine = "";
 				if (isArithmeticOp(lastPushedOp) || isRelationalOp(lastPushedOp)) {
 					while (tokenStack.back() != lastPushedOp) {
 						thisPop.push_back(tokenStack.back());

@@ -39,13 +39,16 @@
     <Text Include="Resources\Source.txt">
       <Filter>Resources</Filter>
     </Text>
-    <Text Include="Resources\instructions.txt">
-      <Filter>Resources</Filter>
-    </Text>
     <Text Include="Resources\lexToParse.txt">
       <Filter>Resources</Filter>
     </Text>
     <Text Include="Resources\symbolTable.txt">
+      <Filter>Resources</Filter>
+    </Text>
+    <Text Include="Resources\Quads.txt">
+      <Filter>Resources</Filter>
+    </Text>
+    <Text Include="Resources\GeneratedAssembly.txt">
       <Filter>Resources</Filter>
     </Text>
   </ItemGroup>
