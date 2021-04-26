@@ -1,0 +1,31 @@
+mov ax, 97
+mov [Y]
+
+mov ax, [M]
+mov bx, [N]
+mul bx
+mov [T1], ax
+
+mov ax, 728
+add ax, 18
+mov [T1], ax
+
+mov ax, 746
+sub ax, [Y]
+mov [T1], ax
+
+mov ax, 649
+mov [X]
+
+mov ax, [Y]
+sub ax, [N]
+mov [T1], ax
+
+mov ax, 41
+mov [X]
+
+
+
+
+
+

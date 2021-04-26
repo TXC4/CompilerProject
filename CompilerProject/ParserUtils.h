@@ -95,7 +95,7 @@ namespace parserUtils {
 			// declare var
 			else {
 				if (symbolTable[i].type == "<var>") {
-					newStr = "bss,resb," + symbolTable[i].symbol;
+					newStr = "bss,resb," + symbolTable[i].symbol + ",~";
 				}
 			}
 			writeQuads(newStr);
@@ -163,7 +163,6 @@ namespace parserUtils {
 					quadLine = tempStr + "," + thisPop[2] + "," + thisPop[0] + "," + "T" + to_string(tempCount);
 				else
 					quadLine = tempStr + "," + thisPop[2] + "," + thisPop[0] + "," + "~";
-				cout << "QUADLINE: " << quadLine << endl;
 				writeQuads(quadLine);
 
 				cout << "t1 = " << t1 << endl;
