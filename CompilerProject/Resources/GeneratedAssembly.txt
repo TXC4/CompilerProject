@@ -31,12 +31,12 @@ mov [T2], ax
 mov ax, [T2]
 mov [X], word ax
 
-mov ax, [Y]
-sub ax, [N]
+mov ax, [X]
+sub ax, [Y]
 mov [T0], ax
 
 mov ax, [T0]
-mov [X], word ax
+mov [Z], word ax
 
 mov ax, 1
 int 0x80

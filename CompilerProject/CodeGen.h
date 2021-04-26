@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include <unordered_map>
 
 using namespace std;
 
@@ -35,6 +36,18 @@ vector<string> readQuads() {
 	return quadList;
 }
 
+// operators
+vector<string>operators = { "+", "-", "*", "/", "=", ">", "<", ">=", "<=", "while", "write", "data", "bss" };
+int getOperatorIndex(string strData) {
+	for (int i = 0; i < operators.size(); i++) {
+		if (operators[i] == strData) {
+			return i;
+		}
+	}
+	cout << "Error, Operator not found" << endl;
+	return -1;
+}
+
 void generateCode() {
 	//clear GeneratedAssembly.txt
 	ofstream out;
@@ -47,6 +60,8 @@ void generateCode() {
 	string sectionState = "text";
 	writeAssembly("section .text\n");
 	vector<string> quads = readQuads();
+
+
 
 	cout << "Printing quads: " << endl;
 	for (int i = 0; i < quads.size(); i++) {
@@ -114,56 +129,75 @@ void generateCode() {
 			
 			//instruction blocks
 			string instructions = "";
-			switch (quads[i][0]) {
-			case '+':
+			int quadCode = getOperatorIndex(quarters[0]);
+			switch (quadCode) {
+			case 0: // +
 				instructions =
 					"mov ax, " + quarters[1] + "\n" +
 					"add ax, " + quarters[2] + "\n" +
 					"mov " + quarters[3] + ", ax\n";
 				break;
-			case '-':
+			case 1: // -
 				instructions =
 					"mov ax, " + quarters[1] + "\n" +
 					"sub ax, " + quarters[2] + "\n" +
 					"mov " + quarters[3] + ", ax\n";
 				break;
-			case '*':
+			case 2: // *
 				instructions =
-					/*"mov ax, [" + quarters[1] + "]\n" +
-					"mul [" + quarters[2] + "]\n" +
-					"mov [T1], ax\n";*/
 					"mov ax, " + quarters[1] + "\n" +
 					"mov bx, " + quarters[2] + "\n" +
 					"mul bx\n" +
 					"mov " + quarters[3] + ", ax\n";
 				break;
-			case '/':
+			case 3: // /
 				instructions =
 					"mov dx, 0\nmov ax, " + quarters[1] + "\n" +
 					"mov bx, " + quarters[2] + "\n" +
 					"idiv bx";
 				break;
-			case '=':
+			case 4: // =
 				instructions =
 					"mov ax, " + quarters[2] + "\n" +
 					"mov " + quarters[1] + ", word ax\n";
 				break;
-			case '>':
+			case 5: // >
 				instructions =
 					"mov ax " + quarters[1] + "\n" +
 					"cmp ax, " + quarters[2] + "\n" +
 					"jle label1\n";
 				break;
-			case '<':
+			case 6: // <
 				instructions =
 					"mov ax " + quarters[1] + "\n" +
 					"cmp ax, " + quarters[2] + "\n" +
 					"jge label1\n";
 				break;
-			case 'd':
+			case 7: // >=
+				instructions =
+					"mov ax " + quarters[1] + "\n" +
+					"cmp ax, " + quarters[2] + "\n" +
+					"jl label1\n";
+				break;
+			case 8: // <=
+				instructions =
+					"mov ax " + quarters[1] + "\n" +
+					"cmp ax, " + quarters[2] + "\n" +
+					"jg label1\n";
+				break;
+			case 9: // while
+				instructions =
+					"something";
+				break;
+					
+			case 10: // write
+				instructions =
+					"something else";
+				break;
+			case 11: // data
 				instructions = quarters[2] + ": dw " + quarters[3] + "\n";
 				break;
-			case 'b':
+			case 12: // bss
 				instructions = quarters[2] + " " + quarters[1] + " 1\n";
 				break;
 			}
