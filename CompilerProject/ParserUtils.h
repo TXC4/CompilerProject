@@ -89,20 +89,20 @@ namespace parserUtils {
 		for (int i = 0; i < symbolTable.size(); i++) {
 			// initialize const
 			string newStr = "";
-			if (symbolTable[i].value != -1) {
+			if (symbolTable[i].type == "<const>") {
 				newStr = "data,=," + symbolTable[i].symbol + "," + to_string(symbolTable[i].value);
 			}
 			// declare var
 			else {
 				if (symbolTable[i].type == "<var>") {
-					newStr = "bss,resb," + symbolTable[i].symbol + ",~";
+					newStr = "bss,resw," + symbolTable[i].symbol + ",~";
 				}
 			}
 			writeQuads(newStr);
 		}
 	}
 
-	int operations(vector<string> thisPop, vector<ParseToken> &symbolTable, int tempCount) {
+	string operations(vector<string> thisPop, vector<ParseToken> &symbolTable, int tempCount) {
 		string opType = "";
 		int t1 = -2;
 		bool tb1 = false;
@@ -166,7 +166,11 @@ namespace parserUtils {
 				writeQuads(quadLine);
 
 				cout << "t1 = " << t1 << endl;
-				return t1;
+				//UNCOMMENT TO TRANSLATE TO C++
+				//return t1;
+
+				string returnTemp = "T" + to_string(tempCount);
+				return returnTemp;
 			}
 			else if (isRelationalOp(thisPop[i])) {
 				// check if thisPop[0] or thisPop[2] is var or const
@@ -191,7 +195,9 @@ namespace parserUtils {
 					break;
 				}
 				cout << "tb1 = " << tb1 << endl;
-				return tb1;
+				//UNCOMMENT TO TRANSLATE TO C++ ALONG
+				//return tb1;
+				string returnTemp = "T" + to_string(tempCount);
 			}
 			else if (thisPop[i] == ")") {
 				cout << "Operation: Popped parenthesis, left with " << thisPop[1] << endl;
@@ -202,7 +208,9 @@ namespace parserUtils {
 				t1 = atoi(thisPop[1].c_str());
 			}
 		}
-		return t1;
+		//UNCOMMENT TO TRANSLATE TO C++ ALONG
+		//return t1;
+		string returnTemp = "T" + to_string(tempCount);
 	}
 
 	vector<string> readFromLex() {

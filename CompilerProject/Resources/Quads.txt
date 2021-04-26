@@ -1,14 +1,14 @@
 =,Y,97,~
 *,M,N,T0
-+,728,18,T1
--,746,Y,T2
-=,X,649,~
++,T0,18,T1
+-,T1,Y,T2
+=,X,T2,~
 -,Y,N,T0
-=,X,41,~
+=,X,T0,~
 data,=,M,13
 data,=,N,56
-data,=,X,41
-data,=,Y,97
-bss,resb,Z,~
+bss,resw,X,~
+bss,resw,Y,~
+bss,resw,Z,~
 
 

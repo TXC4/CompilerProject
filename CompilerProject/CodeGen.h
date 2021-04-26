@@ -41,11 +41,22 @@ void generateCode() {
 	out.open("Resources/GeneratedAssembly.txt", ofstream::out | ofstream::trunc);
 	out.close();
 
+	writeAssembly("global _start\n_start:\n");
+	writeAssembly("section .bss\n");
+	writeAssembly("T0 resw 1\nT1 resw 1\nT2 resw 1\nT3 resw 1\nT4 resw 1\n\n");
+	string sectionState = "text";
+	writeAssembly("section .text\n");
 	vector<string> quads = readQuads();
+
+	cout << "Printing quads: " << endl;
+	for (int i = 0; i < quads.size(); i++) {
+		cout << quads[i] << endl;;
+	}
 	for (int i = 0; i < quads.size(); i++) {
 		if (!quads[i].empty() && quads[i][0] != '\n') {
 			vector<string> quarters;
 			string temp = "";
+			//separate a quad string into 4 parts
 			for (int j = 0; j < quads[i].size(); j++) {
 				if (quads[i][j] != ' ' && quads[i][j] != ',') {
 					temp.push_back(quads[i][j]);
@@ -60,27 +71,61 @@ void generateCode() {
 				}
 			}
 
-			// literal or not
-			if (!isDigit(quarters[1][0]) && quarters[1][0] != 'r') {
-				quarters[1] = "[" + quarters[1] + "]";
+			//make sure writing to correct section
+			//verify in .text
+			if (quarters[0] != "bss" && quarters[0] != "data") {
+				if (sectionState != "text")
+				{
+					sectionState = "text";
+					writeAssembly("section .text\n");
+				}
 			}
-			if (!isDigit(quarters[2][0]) && quarters[2][0] != 'r') {
-				quarters[2] = "[" + quarters[2] + "]";
+			//verify in .bss
+			else if (quarters[0] == "bss") {
+				if (sectionState != "bss") {
+					if (sectionState == "text")
+						writeAssembly("mov ax, 1\nint 0x80\n");
+					sectionState = "bss";
+					writeAssembly("section .bss\n");
+				}
+			}
+			//verify in .data
+			else if (quarters[0] == "data") {
+				if (sectionState != "data") {
+					if (sectionState == "text")
+						writeAssembly("mov ax, 1\nint 0x80\n");
+					sectionState = "data";
+					writeAssembly("section .data\n");
+				}
 			}
 
+			// literal or not?
+			if (sectionState == "text") {
+				if (!isDigit(quarters[1][0]) && quarters[1][0] != 'r') {
+					quarters[1] = "[" + quarters[1] + "]";
+				}
+				if (!isDigit(quarters[2][0]) && quarters[2][0] != 'r') {
+					quarters[2] = "[" + quarters[2] + "]";
+				}
+				if (!isDigit(quarters[3][0])) {
+					quarters[3] = "[" + quarters[3] + "]";
+				}
+			}
+			
+			//instruction blocks
 			string instructions = "";
 			switch (quads[i][0]) {
 			case '+':
 				instructions =
 					"mov ax, " + quarters[1] + "\n" +
 					"add ax, " + quarters[2] + "\n" +
-					"mov [T1], ax\n";
+					"mov " + quarters[3] + ", ax\n";
 				break;
 			case '-':
 				instructions =
 					"mov ax, " + quarters[1] + "\n" +
 					"sub ax, " + quarters[2] + "\n" +
-					"mov [T1], ax\n";
+					"mov " + quarters[3] + ", ax\n";
 				break;
 			case '*':
 				instructions =
@@ -90,7 +135,7 @@ void generateCode() {
 					"mov ax, " + quarters[1] + "\n" +
 					"mov bx, " + quarters[2] + "\n" +
 					"mul bx\n" +
-					"mov [T1], ax\n";
+					"mov " + quarters[3] + ", ax\n";
 				break;
 			case '/':
 				instructions =
@@ -101,7 +146,7 @@ void generateCode() {
 			case '=':
 				instructions =
 					"mov ax, " + quarters[2] + "\n" +
-					"mov " + quarters[1] + "\n";
+					"mov " + quarters[1] + ", word ax\n";
 				break;
 			case '>':
 				instructions =
@@ -114,6 +159,12 @@ void generateCode() {
 					"mov ax " + quarters[1] + "\n" +
 					"cmp ax, " + quarters[2] + "\n" +
 					"jge label1\n";
+				break;
+			case 'd':
+				instructions = quarters[2] + ": dw " + quarters[3] + "\n";
+				break;
+			case 'b':
+				instructions = quarters[2] + " " + quarters[1] + " 1\n";
 				break;
 			}
 			writeAssembly(instructions);

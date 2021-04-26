@@ -1,31 +1,57 @@
+global _start
+_start:
+
+section .bss
+
+T0 resw 1
+T1 resw 1
+T2 resw 1
+T3 resw 1
+T4 resw 1
+
+
+section .text
+
 mov ax, 97
-mov [Y]
+mov [Y], word ax
 
 mov ax, [M]
 mov bx, [N]
 mul bx
-mov [T1], ax
+mov [T0], ax
 
-mov ax, 728
+mov ax, [T0]
 add ax, 18
 mov [T1], ax
 
-mov ax, 746
+mov ax, [T1]
 sub ax, [Y]
-mov [T1], ax
+mov [T2], ax
 
-mov ax, 649
-mov [X]
+mov ax, [T2]
+mov [X], word ax
 
 mov ax, [Y]
 sub ax, [N]
-mov [T1], ax
+mov [T0], ax
 
-mov ax, 41
-mov [X]
+mov ax, [T0]
+mov [X], word ax
 
+mov ax, 1
+int 0x80
 
+section .data
 
+M: dw 13
 
+N: dw 56
 
+section .bss
+
+X resw 1
+
+Y resw 1
+
+Z resw 1
 
