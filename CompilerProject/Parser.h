@@ -50,7 +50,6 @@ bool operatorPrecedenceParser(vector<vector<string>> table, vector<string> table
 				tempCount = 0;
 			//reduce
 			if (relation == ">") {
-				cout << ">" << endl;
 				if (isArithmeticOp(lastPushedOp) || isRelationalOp(lastPushedOp)) {
 					while (tokenStack.back() != lastPushedOp) {
 						thisPop.push_back(tokenStack.back());
@@ -92,14 +91,12 @@ bool operatorPrecedenceParser(vector<vector<string>> table, vector<string> table
 				i--;
 			}
 			else if (relation == "<" || relation == "=") {
-				cout << "<" << endl;
 				tokenStack.push_back(tokenString[i]);
 				lastPushedOp = tokenString[i];
 			}
 			else {
 				cout << "No relation\n";
 			}
-			cout << "Last pushed op: " << lastPushedOp << endl;
 			cout << endl;
 		}
 		//print stack
@@ -134,9 +131,4 @@ void parse() {
 	vector<string> tokenString = readFromLex();
 	operatorPrecedenceParser(completeTable, completeTableHeader, tokenString, symbolTable);
 	assemblyInitialization(symbolTable);
-	
-	cout << "SYMBOL TABLE AS READ TO PARSER.H\n";
-	for (int i = 0; i < symbolTable.size(); i++) {
-		cout << symbolTable[i].symbol << " - " << symbolTable[i].type << " - " << symbolTable[i].value << " - " << symbolTable[i].segment << " - " << symbolTable[i].address << endl;
-	}
 }

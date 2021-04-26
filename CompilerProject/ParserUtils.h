@@ -111,7 +111,6 @@ namespace parserUtils {
 			
 			
 			if (isArithmeticOp(thisPop[i])) {
-				cout << "IS ARITHMETIC OP\n";
 				// check if thisPop[0] or thisPop[2] is var or const
 				// if so we will search the symbol table for it
 				// then get the value
@@ -132,19 +131,15 @@ namespace parserUtils {
 				string quadLine = "";
 				switch (thisPop[i][0]) {
 				case '+':
-					cout << "Which is: " << arg1.c_str() << " + " << atoi(arg2.c_str()) << endl;
 					t1 = atoi(arg1.c_str()) + atoi(arg2.c_str());
 					break;
 				case '*':
-					cout << "Which is: " << arg1.c_str() << " * " << atoi(arg2.c_str()) << endl;
 					t1 = atoi(arg1.c_str()) * atoi(arg2.c_str());
 					break;
 				case '-':
-					cout << "Which is: " << arg1.c_str() << " - " << atoi(arg2.c_str()) << endl;
 					t1 = atoi(arg1.c_str()) - atoi(arg2.c_str());
 					break;
 				case '/':
-					cout << "Which is: " << arg1.c_str() << " / " << atoi(arg2.c_str()) << endl;
 					t1 = atoi(arg1.c_str()) / atoi(arg2.c_str());
 					break;
 				case '=':
@@ -165,7 +160,6 @@ namespace parserUtils {
 					quadLine = tempStr + "," + thisPop[2] + "," + thisPop[0] + "," + "~";
 				writeQuads(quadLine);
 
-				cout << "t1 = " << t1 << endl;
 				//UNCOMMENT TO TRANSLATE TO C++
 				//return t1;
 
@@ -181,11 +175,9 @@ namespace parserUtils {
 
 				if (isLetter(arg1[0])) {
 					arg1 = to_string(getValue(arg1, symbolTable));
-					cout << "arg1: " << arg1 << endl;
 				}
 				if (isLetter(arg2[0])) {
 					arg2 = to_string(getValue(arg2, symbolTable));
-					cout << "arg2: " << arg2 << endl;
 				}
 
 				cout << "Relational Operation: " << thisPop[2] << thisPop[1] << thisPop[0] << endl;
@@ -194,7 +186,6 @@ namespace parserUtils {
 					tb1 = atoi(arg1.c_str()) / atoi(arg2.c_str());
 					break;
 				}
-				cout << "tb1 = " << tb1 << endl;
 				//UNCOMMENT TO TRANSLATE TO C++ ALONG
 				//return tb1;
 				string returnTemp = "T" + to_string(tempCount);
