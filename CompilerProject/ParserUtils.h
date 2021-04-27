@@ -29,7 +29,7 @@ namespace parserUtils {
 	
 
 
-	vector<string> operatorList = { "+", "-", "*", "/", "(", ")", ";", "{", "}", ">", ">=", "WHILE", "=", "DO" };
+	vector<string> operatorList = { "+", "-", "*", "/", "(", ")", ";", "{", "}", ">", ">=", "WHILE", "=", "DO", "CALL", "<", "<=" };
 	bool isOperator(string input) {
 		for (int i = 0; i < operatorList.size(); i++) {
 			if (input == operatorList[i])

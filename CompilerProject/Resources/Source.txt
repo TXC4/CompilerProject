@@ -1,7 +1,7 @@
 CLASS Pgm1 {
 	VAR X;
 	X = 5;
-	WHILE X > 1 DO
+	WHILE X < 1 DO
 	{
 		X = X - 1;
 	};

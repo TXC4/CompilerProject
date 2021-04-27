@@ -112,7 +112,7 @@ W0:
 
 mov ax, [X]
 cmp ax, 1
-jle L0
+jge L0
 
 mov ax, [X]
 sub ax, 1
