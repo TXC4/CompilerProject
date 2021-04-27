@@ -76,23 +76,39 @@ bool operatorPrecedenceParser(vector<vector<string>> table, vector<string> table
 					thisPop.push_back(tokenStack.back());
 					tokenStack.pop_back();
 				}
+				else if (lastPushedOp == "DO" && tableHeader[nextOpIndex] == ";") {
+					while (tokenStack.back() != "WHILE") {
+						thisPop.push_back(tokenStack.back());
+						tokenStack.pop_back();
+					}
+					thisPop.push_back(tokenStack.back());
+					tokenStack.pop_back();
+				}
 
 				lastPushedOp = tokenStack.back();
-				if (thisPop[1] != "=") {
+				if (thisPop[1] == "=" || thisPop[0] == "DO") {
+					operations(thisPop, symbolTable, tempCount);
+				}
+				else {
 					//UNCOMMENT AND IN OPERATIONS() RETURN ACTUAL INT VALUE
 					//tokenStack.push_back(to_string(operations(thisPop, symbolTable, tempCount)));
 					tokenStack.push_back(operations(thisPop, symbolTable, tempCount));
 					tempCount++;
 				}
-				else {
-					operations(thisPop, symbolTable, tempCount);
-				}
+				
 				
 				i--;
 			}
 			else if (relation == "<" || relation == "=") {
 				tokenStack.push_back(tokenString[i]);
 				lastPushedOp = tokenString[i];
+				// "WHILE" pushed to stack
+				if (tokenString[i] == "WHILE") {
+					string whileLabel = pushLabel("whileLabelStack");
+					string generalLabel = pushLabel("labelStack");
+					string quadLine = "whilePush," + whileLabel + "," + generalLabel + ",~";
+					writeQuads(quadLine);
+				}
 			}
 			else {
 				cout << "No relation\n";
@@ -111,21 +127,22 @@ bool operatorPrecedenceParser(vector<vector<string>> table, vector<string> table
 void parse() {
 	vector<ParseToken> symbolTable = readSymbolTable();
 
-	vector<string> completeTableHeader = { "+", "-", "*", "/", "(", ")", ";", "{", "}", ">", ">=", "while", "=" };
+	vector<string> completeTableHeader = { "+", "-", "*", "/", "(", ")", ";", "{", "}", ">", ">=", "WHILE", "=", "DO" };
 	vector<vector<string>> completeTable = {
-		{">",">","<","<","<",">",">", "",">", "", "", "", ""},
-		{">",">","<","<","<",">",">", "",">", "", "", "", ""},
-		{">",">",">",">","<",">",">", "",">", "", "", "", ""},
-		{">",">",">",">","<",">",">", "",">", "", "", "", ""},
-		{"<","<","<","<","<","=", "", "", "","<","<", "", ""},
-		{">",">",">",">", "",">",">", "", "", "", "", "", ""},
-		{"<","<","<","<","<", "", "", "", "", "", "", "","<"},
-		{"<","<","<","<","<", "", "",">","=", "", "","<","<"},
-		{ "", "", "", "", "", "",">", "",">", "", "","<", ""},
-		{"<","<","<","<","<",">", "", "", "", "", "", "", ""},
-		{"<","<","<","<","<",">", "", "", "", "", "", "", ""},
-		{ "", "", "","<", "", "",">", "", "", "", "", "", ""},
-		{"<","<","<","<","<", "",">", "", "", "", "", "", ""},
+		{">",">","<","<","<",">",">", "",">", "", "", "", "", ""},
+		{">",">","<","<","<",">",">", "",">", "", "", "", "", ""},
+		{">",">",">",">","<",">",">", "",">", "", "", "", "", ""},
+		{">",">",">",">","<",">",">", "",">", "", "", "", "", ""},
+		{"<","<","<","<","<","=", "", "", "","<","<", "", "", ""},
+		{">",">",">",">", "",">",">", "", "", "", "", "", "", ""},
+		{"<","<","<","<","<", "", "", "", "", "", "","<","<", ""},
+		{"<","<","<","<","<", "", "",">","=", "", "","<","<", ""},
+		{ "", "", "", "", "", "",">", "",">", "", "","<", "", ""},
+		{"<","<","<","<","<",">", "", "", "", "", "", "", "",">"},
+		{"<","<","<","<","<",">", "", "", "", "", "", "", "",">"},
+		{"<","<","<","<","<", "",">", "", "","<","<", "", "","="},
+		{"<","<","<","<","<", "",">", "", "","<", "", "", "", ""},
+		{ "", "", "", "","<", "",">", "", "", "","<", "","<", ""}
 	};
 
 	vector<string> tokenString = readFromLex();

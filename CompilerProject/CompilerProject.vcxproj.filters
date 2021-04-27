@@ -51,6 +51,9 @@
     <Text Include="Resources\GeneratedAssembly.txt">
       <Filter>Resources</Filter>
     </Text>
+    <Text Include="Resources\StandardLibrary.txt">
+      <Filter>Resources</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\table.xlsx">

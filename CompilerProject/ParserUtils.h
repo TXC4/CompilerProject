@@ -2,7 +2,7 @@
 #include "LexUtils.h"
 
 #include <fstream>
-
+#include <deque>
 
 
 namespace parserUtils {
@@ -29,7 +29,7 @@ namespace parserUtils {
 	
 
 
-	vector<string> operatorList = { "+", "-", "*", "/", "(", ")", ";", "{", "}", ">", ">=", "while", "=" };
+	vector<string> operatorList = { "+", "-", "*", "/", "(", ")", ";", "{", "}", ">", ">=", "WHILE", "=", "DO" };
 	bool isOperator(string input) {
 		for (int i = 0; i < operatorList.size(); i++) {
 			if (input == operatorList[i])
@@ -102,6 +102,36 @@ namespace parserUtils {
 		}
 	}
 
+	// Label stacks
+	deque<string> whileLabelStack;
+	deque<string> labelStack;
+
+	string pushLabel(string dequeStack) {
+		string label = "";
+		if (dequeStack == "whileLabelStack") {
+			label = "W" + to_string(whileLabelStack.size());
+			whileLabelStack.push_back(label);
+		}
+		else if (dequeStack == "labelStack") {
+			label = "L" + to_string(labelStack.size());
+			labelStack.push_back(label);
+		}
+		return label;
+	}
+	
+	string popLabel(string dequeStack) {
+		string label = "";
+		if (dequeStack == "whileLabelStack") {
+			label = whileLabelStack.back();
+			whileLabelStack.pop_back();
+		}
+		else if (dequeStack == "labelStack") {
+			label = labelStack.back();
+			labelStack.pop_back();
+		}
+		return label;
+	}
+
 	string operations(vector<string> thisPop, vector<ParseToken> &symbolTable, int tempCount) {
 		string opType = "";
 		int t1 = -2;
@@ -109,7 +139,7 @@ namespace parserUtils {
 
 		for (int i = 0; i < thisPop.size(); i++) {
 			
-			
+			string quadLine = "";
 			if (isArithmeticOp(thisPop[i])) {
 				// check if thisPop[0] or thisPop[2] is var or const
 				// if so we will search the symbol table for it
@@ -128,7 +158,8 @@ namespace parserUtils {
 
 				cout << "Arithmetic Operation: " << thisPop[2] << thisPop[1] << thisPop[0] << endl;
 				//compiles to c++ for log then writes out quads for x86
-				string quadLine = "";
+				//ignore if not compiling to c++
+				
 				switch (thisPop[i][0]) {
 				case '+':
 					t1 = atoi(arg1.c_str()) + atoi(arg2.c_str());
@@ -154,9 +185,9 @@ namespace parserUtils {
 				// quad generation
 				string tempStr = "";
 				tempStr.push_back(thisPop[i][0]);
-				if (tempStr != "=")
+				if (tempStr == "+" || tempStr == "-" || tempStr == "*" || tempStr == "/" || tempStr == ">" || tempStr == "<" || tempStr == ">=" || tempStr == "<=" || tempStr == "==")
 					quadLine = tempStr + "," + thisPop[2] + "," + thisPop[0] + "," + "T" + to_string(tempCount);
-				else
+				else if (tempStr == "=")
 					quadLine = tempStr + "," + thisPop[2] + "," + thisPop[0] + "," + "~";
 				writeQuads(quadLine);
 
@@ -183,10 +214,18 @@ namespace parserUtils {
 				cout << "Relational Operation: " << thisPop[2] << thisPop[1] << thisPop[0] << endl;
 				switch (thisPop[i][0]) {
 				case '>':
-					tb1 = atoi(arg1.c_str()) / atoi(arg2.c_str());
+					tb1 = atoi(arg1.c_str()) > atoi(arg2.c_str());
 					break;
 				}
-				//UNCOMMENT TO TRANSLATE TO C++ ALONG
+
+				// quad generation
+				string tempStr = "";
+				tempStr.push_back(thisPop[i][0]);
+				quadLine = tempStr + "," + thisPop[2] + "," + thisPop[0] + "," + labelStack.back();
+				writeQuads(quadLine);
+
+
+				//UNCOMMENT TO TRANSLATE TO C++
 				//return tb1;
 				string returnTemp = "T" + to_string(tempCount);
 			}
@@ -198,10 +237,16 @@ namespace parserUtils {
 				cout << "Operation: Popped curly brackets, left with " << thisPop[1] << endl;
 				t1 = atoi(thisPop[1].c_str());
 			}
+			else if (thisPop[i] == "DO") {
+				cout << "Operation: Popped while\n";
+				quadLine = "whilePop," + popLabel("labelStack") + ",~" + ",~";
+				writeQuads(quadLine);
+			}
 		}
-		//UNCOMMENT TO TRANSLATE TO C++ ALONG
+		//UNCOMMENT TO TRANSLATE TO C++
 		//return t1;
 		string returnTemp = "T" + to_string(tempCount);
+		return returnTemp;
 	}
 
 	vector<string> readFromLex() {

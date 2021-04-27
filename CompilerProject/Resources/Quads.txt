@@ -1,14 +1,11 @@
-=,Y,97,~
-*,M,N,T0
-+,T0,18,T1
--,T1,Y,T2
-=,X,T2,~
--,X,Y,T0
-=,Z,T0,~
-data,=,M,13
-data,=,N,56
+=,I,0,~
+whilePush,W0,L0,~
+>,I,11,L0
++,I,1,T1
+=,I,T1,~
+whilePop,L0,~,~
+bss,resw,I,~
 bss,resw,X,~
-bss,resw,Y,~
-bss,resw,Z,~
+
 
 

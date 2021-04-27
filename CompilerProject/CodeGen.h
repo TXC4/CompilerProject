@@ -36,8 +36,22 @@ vector<string> readQuads() {
 	return quadList;
 }
 
+string readFile(string fileName) {
+	ifstream inFile;
+	string returnString = "";
+	inFile.open(fileName, ios::in);
+	string newString = "";
+	if (inFile.is_open()) {
+		while (getline(inFile, newString)) {
+			returnString.append(newString);
+			returnString.append("\n");
+		}
+	}
+	return returnString;
+}
+
 // operators
-vector<string>operators = { "+", "-", "*", "/", "=", ">", "<", ">=", "<=", "while", "write", "data", "bss" };
+vector<string>operators = { "+", "-", "*", "/", "=", ">", "<", ">=", "<=", "whilePush", "whilePop", "printLabel", "data", "bss" };
 int getOperatorIndex(string strData) {
 	for (int i = 0; i < operators.size(); i++) {
 		if (operators[i] == strData) {
@@ -48,15 +62,26 @@ int getOperatorIndex(string strData) {
 	return -1;
 }
 
+string removeBrackets(string str) {
+	for (int i = 0; i < str.size(); i++) {
+		if (str[i] == '[' || str[i] == ']') {
+			str.erase(i, 1);
+		}
+	}
+	return str;
+}
+
 void generateCode() {
 	//clear GeneratedAssembly.txt
 	ofstream out;
 	out.open("Resources/GeneratedAssembly.txt", ofstream::out | ofstream::trunc);
 	out.close();
 
-	writeAssembly("global _start\n_start:\n");
+	writeAssembly(readFile("Resources/StandardLibrary.txt"));
 	writeAssembly("section .bss\n");
 	writeAssembly("T0 resw 1\nT1 resw 1\nT2 resw 1\nT3 resw 1\nT4 resw 1\n\n");
+	writeAssembly("section .text \n_start:\n");
+	
 	string sectionState = "text";
 	writeAssembly("section .text\n");
 	vector<string> quads = readQuads();
@@ -116,16 +141,17 @@ void generateCode() {
 
 			// literal or not?
 			if (sectionState == "text") {
-				if (!isDigit(quarters[1][0]) && quarters[1][0] != 'r') {
+				if (!isDigit(quarters[1][0])) {
 					quarters[1] = "[" + quarters[1] + "]";
 				}
-				if (!isDigit(quarters[2][0]) && quarters[2][0] != 'r') {
+				if (!isDigit(quarters[2][0])) {
 					quarters[2] = "[" + quarters[2] + "]";
 				}
 				if (!isDigit(quarters[3][0])) {
 					quarters[3] = "[" + quarters[3] + "]";
 				}
 			}
+
 			
 			//instruction blocks
 			string instructions = "";
@@ -162,42 +188,55 @@ void generateCode() {
 					"mov " + quarters[1] + ", word ax\n";
 				break;
 			case 5: // >
+				quarters[3] = removeBrackets(quarters[3]);
 				instructions =
-					"mov ax " + quarters[1] + "\n" +
+					"mov ax, " + quarters[1] + "\n" +
 					"cmp ax, " + quarters[2] + "\n" +
-					"jle label1\n";
+					"jle " + quarters[3] + "\n";
 				break;
 			case 6: // <
+				quarters[3] = removeBrackets(quarters[3]);
 				instructions =
-					"mov ax " + quarters[1] + "\n" +
+					"mov ax, " + quarters[1] + "\n" +
 					"cmp ax, " + quarters[2] + "\n" +
-					"jge label1\n";
+					"jge " + quarters[3] + "\n";
 				break;
 			case 7: // >=
+				quarters[3] = removeBrackets(quarters[3]);
 				instructions =
-					"mov ax " + quarters[1] + "\n" +
+					"mov ax, " + quarters[1] + "\n" +
 					"cmp ax, " + quarters[2] + "\n" +
-					"jl label1\n";
+					"jl " + quarters[3] + "\n";
 				break;
 			case 8: // <=
+				quarters[3] = removeBrackets(quarters[3]);
 				instructions =
-					"mov ax " + quarters[1] + "\n" +
+					"mov ax, " + quarters[1] + "\n" +
 					"cmp ax, " + quarters[2] + "\n" +
-					"jg label1\n";
+					"jg " + quarters[3] + "\n";
 				break;
-			case 9: // while
+			case 9: // whilePush
+				quarters[1] = removeBrackets(quarters[1]);
 				instructions =
-					"something";
+					quarters[1] + ":\n";
+				break;
+			case 10: // whilePop
+				quarters[1] = removeBrackets(quarters[1]);
+				instructions =
+					"jmp " + quarters[1] + "\n" +
+					quarters[1] + ": NOP\n";
 				break;
 					
-			case 10: // write
+			case 11: // printInt
 				instructions =
-					"something else";
+					"mov ax, " + quarters[1] + "\n" +
+					"call convertIntToStr\n" +
+					"call write";
 				break;
-			case 11: // data
+			case 12: // data
 				instructions = quarters[2] + ": dw " + quarters[3] + "\n";
 				break;
-			case 12: // bss
+			case 13: // bss
 				instructions = quarters[2] + " " + quarters[1] + " 1\n";
 				break;
 			}
