@@ -1,5 +1,6 @@
 #pragma once
 #include "LexUtils.h"
+#include "TypeChecking.h"
 
 #include <fstream>
 #include <deque>
@@ -7,25 +8,6 @@
 
 namespace parserUtils {
 
-	struct ParseToken {
-		string symbol;
-		string type;
-		string address;
-		int value = -1;
-		string segment;
-		bool isEmpty = true;
-
-		ParseToken() {};
-
-		ParseToken(string symbolArg, string typeArg, string segmentArg) {
-			symbol = symbolArg;
-			type = typeArg;
-			segment = segmentArg;
-			isEmpty = false;
-		}
-	};
-
-	
 	
 
 
@@ -182,6 +164,11 @@ namespace parserUtils {
 					t1 = -1;
 					break;
 				}
+
+				// type check
+				typeCheck(symbolTable, thisPop[2], "<int>");
+				typeCheck(symbolTable, thisPop[0], "<int>");
+
 				// quad generation
 				string tempStr = "";
 				tempStr.push_back(thisPop[i][0]);
@@ -217,6 +204,10 @@ namespace parserUtils {
 					tb1 = atoi(arg1.c_str()) > atoi(arg2.c_str());
 					break;
 				}
+
+				// type check
+				typeCheck(symbolTable, thisPop[2], "<int>");
+				typeCheck(symbolTable, thisPop[0], "<int>");
 
 				// quad generation
 				string tempStr = thisPop[i];

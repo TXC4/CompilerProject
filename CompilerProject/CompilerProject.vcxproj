@@ -144,6 +144,7 @@
     <ClInclude Include="Parser.h" />
     <ClInclude Include="ParserUtils.h" />
     <ClInclude Include="Lex.h" />
+    <ClInclude Include="TypeChecking.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp" />
