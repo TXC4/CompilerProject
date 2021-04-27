@@ -219,8 +219,7 @@ namespace parserUtils {
 				}
 
 				// quad generation
-				string tempStr = "";
-				tempStr.push_back(thisPop[i][0]);
+				string tempStr = thisPop[i];
 				quadLine = tempStr + "," + thisPop[2] + "," + thisPop[0] + "," + labelStack.back();
 				writeQuads(quadLine);
 

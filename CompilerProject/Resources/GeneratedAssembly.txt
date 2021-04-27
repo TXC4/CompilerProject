@@ -105,17 +105,17 @@ _start:
 
 section .text
 
-mov ax, 5
+mov ax, 0
 mov [X], word ax
 
 W0:
 
 mov ax, [X]
-cmp ax, 1
-jge L0
+cmp ax, 5
+jg L0
 
 mov ax, [X]
-sub ax, 1
+add ax, 1
 mov [T0], ax
 
 mov ax, [T0]
@@ -125,6 +125,7 @@ jmp W0
 L0: NOP
 
 mov ax, 1
+mov bx, [X]
 int 0x80
 
 section .bss

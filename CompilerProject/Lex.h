@@ -63,6 +63,14 @@ string readFile() {
 			{
 				cout << newChar;
 				codeString.push_back(newChar);
+				if (newChar == '>' || newChar == '<')
+				{
+					char ch = fileStream.peek();
+					if (ch == '=') {
+						codeString.push_back(ch);
+						fileStream.get();
+					}
+				}
 			}
 			if (newChar == '\n' && codeString.back() != ';')
 				codeString.push_back(' ');
