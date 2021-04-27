@@ -64,6 +64,11 @@ mov edx, 6
 int 0x80
 ret 
 
+printInt:
+call convertIntToStr
+call write
+ret
+
 exit:
 mov eax, 1
 mov ebx, 0
@@ -124,8 +129,9 @@ mov [X], word ax
 jmp W0
 L0: NOP
 
+call printInt
+
 mov ax, 1
-mov bx, [X]
 int 0x80
 
 section .bss

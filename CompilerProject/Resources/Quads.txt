@@ -4,6 +4,7 @@ whilePush,W0,L0,~
 +,X,1,T0
 =,X,T0,~
 whilePop,W0,L0,~
+call,printInt,~,~
 bss,resw,X,~
 
 

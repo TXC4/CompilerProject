@@ -17,5 +17,8 @@ X
 ;
 }
 ;
+CALL
+printInt
+;
 }
 ;

@@ -51,7 +51,7 @@ string readFile(string fileName) {
 }
 
 // operators
-vector<string>operators = { "+", "-", "*", "/", "=", ">", "<", ">=", "<=", "whilePush", "whilePop", "printLabel", "data", "bss" };
+vector<string>operators = { "+", "-", "*", "/", "=", ">", "<", ">=", "<=", "whilePush", "whilePop", "printLabel", "data", "bss", "call" };
 int getOperatorIndex(string strData) {
 	for (int i = 0; i < operators.size(); i++) {
 		if (operators[i] == strData) {
@@ -240,6 +240,9 @@ void generateCode() {
 			case 13: // bss
 				instructions = quarters[2] + " " + quarters[1] + " 1\n";
 				break;
+			case 14: // call
+				quarters[1] = removeBrackets(quarters[1]);
+				instructions = "call " + quarters[1] + "\n";
 			}
 			writeAssembly(instructions);
 		}

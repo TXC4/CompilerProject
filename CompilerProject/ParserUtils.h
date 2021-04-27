@@ -185,7 +185,7 @@ namespace parserUtils {
 				// quad generation
 				string tempStr = "";
 				tempStr.push_back(thisPop[i][0]);
-				if (tempStr == "+" || tempStr == "-" || tempStr == "*" || tempStr == "/" || tempStr == ">" || tempStr == "<" || tempStr == ">=" || tempStr == "<=" || tempStr == "==")
+				if (tempStr == "+" || tempStr == "-" || tempStr == "*" || tempStr == "/")
 					quadLine = tempStr + "," + thisPop[2] + "," + thisPop[0] + "," + "T" + to_string(tempCount);
 				else if (tempStr == "=")
 					quadLine = tempStr + "," + thisPop[2] + "," + thisPop[0] + "," + "~";
@@ -239,6 +239,11 @@ namespace parserUtils {
 			else if (thisPop[i] == "DO") {
 				cout << "Operation: Popped while\n";
 				quadLine = "whilePop," + popLabel("whileLabelStack") + "," + popLabel("labelStack") + ",~";
+				writeQuads(quadLine);
+			}
+			else if (thisPop[i] == "CALL") {
+				cout << "Operation: Popped call to " << thisPop[0] << endl;
+				quadLine = "call," + thisPop[0] + ",~,~";
 				writeQuads(quadLine);
 			}
 		}
