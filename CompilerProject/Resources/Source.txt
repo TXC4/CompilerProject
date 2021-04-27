@@ -1,6 +1,8 @@
 CLASS Pgm1 {
-	VAR I, X;
-	I = 0;
-	WHILE I > 11 DO 
-	I = I + 1;
-}
+	VAR X;
+	X = 5;
+	WHILE X > 1 DO
+	{
+		X = X - 1;
+	};
+};

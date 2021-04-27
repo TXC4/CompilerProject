@@ -222,9 +222,10 @@ void generateCode() {
 				break;
 			case 10: // whilePop
 				quarters[1] = removeBrackets(quarters[1]);
+				quarters[2] = removeBrackets(quarters[2]);
 				instructions =
 					"jmp " + quarters[1] + "\n" +
-					quarters[1] + ": NOP\n";
+					quarters[2] + ": NOP\n";
 				break;
 					
 			case 11: // printInt

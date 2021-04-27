@@ -87,14 +87,14 @@ bool isKeyword(string str) {
 }
 
 bool isOperator(string str) {
-	if (str == "=" || str == "," || str == ";" || str == "+" || str == "-" || str == "*" || str == "/" || str == "(" || str == ")" || str == "<" || str == ">" || str == "{" || str == "}" || str == "==" || str == ">=" || str == "<=" || str == "!=" || str == "/*" || str == "*/" || str == "WHILE" || str == "DO")
+	if (str == "=" || str == "," || str == ";" || str == "+" || str == "-" || str == "*" || str == "/" || str == "(" || str == ")" || str == "<" || str == ">" || str == "{" || str == "}" || str == "==" || str == ">=" || str == "<=" || str == "!=" || str == "/*" || str == "*/")
 		return true;
 	else
 		return false;
 }
 
 bool isDelimiter(char ch) {
-	if (ch == ',' || ch == ';' || ch == '(' || ch == ')' || ch == '[' || ch == ']' || ch == '{' || ch == '}') {
+	if (ch == ',' || ch == ';' || ch == '(' || ch == ')' || ch == '[' || ch == ']' || ch == '{' || ch == '}' || ch == '\n') {
 		return true;
 	}
 	else

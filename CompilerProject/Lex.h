@@ -64,6 +64,8 @@ string readFile() {
 				cout << newChar;
 				codeString.push_back(newChar);
 			}
+			if (newChar == '\n' && codeString.back() != ';')
+				codeString.push_back(' ');
 		}
 		//~ = EOF
 		codeString.push_back('~');
@@ -141,7 +143,9 @@ void analyze() {
 			cout << "index of: " << indexOf(thisToken, stateTableColumns) << endl;
 			currentState = stateTable[currentState][indexOf(thisToken, stateTableColumns)]; break;
 		case 1: currentState = stateTable[currentState][indexOf("<var>", stateTableColumns)]; break;
-		case 2: currentState = stateTable[currentState][indexOf(thisToken, stateTableColumns)]; break;
+		case 2: currentState = stateTable[currentState][indexOf(thisToken, stateTableColumns)]; 
+			parserTokens.push_back(thisToken);
+			break;
 		case 3:
 			if (thisToken == "CONST" || thisToken == "VAR") {
 				currentState = stateTable[currentState][indexOf(thisToken, stateTableColumns)];
@@ -203,7 +207,7 @@ void analyze() {
 		if (currentState == -1)
 			cout << "ERROR state -1\n";
 	}
-	if (writeToParser && (thisToken != "~" && thisToken != "}")) {
+	if (writeToParser && (thisToken != "~")) {
 		parserTokens.push_back(thisToken);
 	}
 }

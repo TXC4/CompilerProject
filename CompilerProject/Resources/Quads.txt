@@ -1,10 +1,9 @@
-=,I,0,~
+=,X,5,~
 whilePush,W0,L0,~
->,I,11,L0
-+,I,1,T1
-=,I,T1,~
-whilePop,L0,~,~
-bss,resw,I,~
+>,X,1,L0
+-,X,1,T0
+=,X,T0,~
+whilePop,W0,L0,~
 bss,resw,X,~
 
 

@@ -105,31 +105,29 @@ _start:
 
 section .text
 
-mov ax, 0
-mov [I], word ax
+mov ax, 5
+mov [X], word ax
 
 W0:
 
-mov ax, [I]
-cmp ax, 11
+mov ax, [X]
+cmp ax, 1
 jle L0
 
-mov ax, [I]
-add ax, 1
-mov [T1], ax
+mov ax, [X]
+sub ax, 1
+mov [T0], ax
 
-mov ax, [T1]
-mov [I], word ax
+mov ax, [T0]
+mov [X], word ax
 
-jmp L0
+jmp W0
 L0: NOP
 
 mov ax, 1
 int 0x80
 
 section .bss
-
-I resw 1
 
 X resw 1
 

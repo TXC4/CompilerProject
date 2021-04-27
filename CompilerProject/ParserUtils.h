@@ -230,16 +230,16 @@ namespace parserUtils {
 				string returnTemp = "T" + to_string(tempCount);
 			}
 			else if (thisPop[i] == ")") {
-				cout << "Operation: Popped parenthesis, left with " << thisPop[1] << endl;
+				cout << "Operation: Popped parenthesis" << endl;
 				t1 = atoi(thisPop[1].c_str());
 			}
 			else if (thisPop[i] == "}") {
-				cout << "Operation: Popped curly brackets, left with " << thisPop[1] << endl;
+				cout << "Operation: Popped curly brackets" << endl;
 				t1 = atoi(thisPop[1].c_str());
 			}
 			else if (thisPop[i] == "DO") {
 				cout << "Operation: Popped while\n";
-				quadLine = "whilePop," + popLabel("labelStack") + ",~" + ",~";
+				quadLine = "whilePop," + popLabel("whileLabelStack") + "," + popLabel("labelStack") + ",~";
 				writeQuads(quadLine);
 			}
 		}
