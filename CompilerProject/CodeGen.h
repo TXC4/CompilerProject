@@ -241,8 +241,17 @@ void generateCode() {
 				instructions = quarters[2] + " " + quarters[1] + " 1\n";
 				break;
 			case 14: // call
-				quarters[1] = removeBrackets(quarters[1]);
-				instructions = "call " + quarters[1] + "\n";
+				// check for arguments
+				if (quarters[2] == "~") {
+					quarters[1] = removeBrackets(quarters[1]);
+					instructions = "call " + quarters[1] + "\n";
+				}
+				else {
+					quarters[1] = removeBrackets(quarters[1]);
+					instructions =
+						"mov ax, " + quarters[2] + "\n" +
+						"call " + quarters[1] + "\n";
+				}
 			}
 			writeAssembly(instructions);
 		}

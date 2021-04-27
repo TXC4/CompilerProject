@@ -1,9 +1,10 @@
 CLASS Pgm1 {
-	VAR X;
+	VAR X, Y;
 	X = 0;
 	WHILE X <= 5 DO
 	{
 		X = X + 1;
 	};
-	CALL printInt;
+	Y = 10 - 3;
+	CALL printInt(Y);
 };

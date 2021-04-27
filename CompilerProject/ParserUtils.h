@@ -243,7 +243,13 @@ namespace parserUtils {
 			}
 			else if (thisPop[i] == "CALL") {
 				cout << "Operation: Popped call to " << thisPop[0] << endl;
-				quadLine = "call," + thisPop[0] + ",~,~";
+				// check if arguments passed
+				if (thisPop.size() > 2) {
+					quadLine = "call," + thisPop[1] + "," + thisPop[0] + ",~";
+				}
+				else {
+					quadLine = "call," + thisPop[0] + ",~,~";
+				}
 				writeQuads(quadLine);
 			}
 		}
