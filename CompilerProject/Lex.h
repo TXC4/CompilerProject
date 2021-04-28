@@ -88,11 +88,11 @@ string readFile() {
 	return codeString;
 }
 
-vector<string> getPossibleStates(int currentState, vector<vector<string>> automataTable) {
+vector<string> getPossibleStates(int currentState) {
 	vector<string> possibilities;
-	for (int i = 1; i < automataTable[0].size(); i++) {
-		if (automataTable[currentState][i] != "") {
-			possibilities.push_back(automataTable[0][i]);
+	for (int i = 1; i < stateTable[0].size(); i++) {
+		if (stateTable[currentState][i] != -1) {
+			possibilities.push_back(stateTableColumns[i]);
 		}
 	}
 	return possibilities;
@@ -212,8 +212,19 @@ void analyze() {
 			cout << "Success Pass 1\n\n"; break;
 		}
 
+		// Error checking
 		if (currentState == -1)
-			cout << "ERROR state -1\n";
+		{
+			cout << "LEXICAL ERROR: received " << thisToken << ", expected ";
+			vector<string> possibleStates = getPossibleStates(currentState);
+			for (int i = 0; i < possibleStates.size(); i++) {
+				cout << possibleStates[i];
+				if (i != possibleStates.size() - 1)
+					cout << ", ";
+			}
+			cout << endl;
+			exit(1);
+		}
 	}
 	if (writeToParser && (thisToken != "~")) {
 		parserTokens.push_back(thisToken);
@@ -247,6 +258,18 @@ void buildSymbolTable(string sourceCode) {
 			thisToken = "";
 		}
 	}
+
+	//push temporaries to symbol table
+	Token T0 = Token("T0", "<int>", "DS");
+	Token T1 = Token("T1", "<int>", "DS");
+	Token T2 = Token("T2", "<int>", "DS");
+	Token T3 = Token("T3", "<int>", "DS");
+	Token T4 = Token("T4", "<int>", "DS");
+	pushToSymbolTable(T0);
+	pushToSymbolTable(T1);
+	pushToSymbolTable(T2);
+	pushToSymbolTable(T3);
+	pushToSymbolTable(T4);
 
 	//assign address to token object as string and print & write symbol table
 	ofstream outFile("Resources/symbolTable.txt");

@@ -166,8 +166,9 @@ namespace parserUtils {
 				}
 
 				// type check
-				typeCheck(symbolTable, thisPop[2], "<int>");
-				typeCheck(symbolTable, thisPop[0], "<int>");
+				vector<string> types = { "<int>", "<var>", "<const>" };
+				typeCheck(symbolTable, thisPop[2], types);
+				typeCheck(symbolTable, thisPop[0], types);
 
 				// quad generation
 				string tempStr = "";
@@ -206,8 +207,9 @@ namespace parserUtils {
 				}
 
 				// type check
-				typeCheck(symbolTable, thisPop[2], "<int>");
-				typeCheck(symbolTable, thisPop[0], "<int>");
+				vector<string> types = { "<int>", "<var>", "<const>" };
+				typeCheck(symbolTable, thisPop[2], types);
+				typeCheck(symbolTable, thisPop[0], types);
 
 				// quad generation
 				string tempStr = thisPop[i];
