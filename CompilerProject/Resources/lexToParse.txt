@@ -1,11 +1,13 @@
 {
+CALL
+getInt
+(
 X
-=
-5
+)
 ;
 I
 =
-5
+X
 ;
 WHILE
 I

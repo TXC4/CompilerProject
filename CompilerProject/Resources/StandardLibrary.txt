@@ -64,6 +64,13 @@ mov edx, 6
 int 0x80
 ret 
 
+getInt:
+call promptUser
+call read
+mov [inInt], eax
+mov ax, [inInt]
+ret
+
 printInt:
 call convertIntToStr
 call write
@@ -95,3 +102,4 @@ readInt resw 1
 tempInt resw 1
 negFlag resb 1
 printString resw 1
+inInt resw 1

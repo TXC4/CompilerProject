@@ -265,11 +265,19 @@ void buildSymbolTable(string sourceCode) {
 	Token T2 = Token("T2", "<int>", "DS");
 	Token T3 = Token("T3", "<int>", "DS");
 	Token T4 = Token("T4", "<int>", "DS");
+	Token T5 = Token("T5", "<int>", "DS");
+	Token T6 = Token("T6", "<int>", "DS");
+	Token T7 = Token("T7", "<int>", "DS");
+	Token T8 = Token("T8", "<int>", "DS");
 	pushToSymbolTable(T0);
 	pushToSymbolTable(T1);
 	pushToSymbolTable(T2);
 	pushToSymbolTable(T3);
 	pushToSymbolTable(T4);
+	pushToSymbolTable(T5);
+	pushToSymbolTable(T6);
+	pushToSymbolTable(T7);
+	pushToSymbolTable(T8);
 
 	//assign address to token object as string and print & write symbol table
 	ofstream outFile("Resources/symbolTable.txt");

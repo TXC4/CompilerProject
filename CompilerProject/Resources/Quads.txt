@@ -1,5 +1,5 @@
-=,X,5,~
-=,I,5,~
+call,getInt,X,~
+=,I,X,~
 whilePush,W0,L0,~
 >,I,1,L0
 -,I,1,T0
@@ -12,6 +12,8 @@ call,printInt,X,~
 bss,resw,X,~
 bss,resw,Y,~
 bss,resw,I,~
+
+
 
 
 

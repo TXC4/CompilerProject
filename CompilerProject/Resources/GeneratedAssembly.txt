@@ -64,6 +64,13 @@ mov edx, 6
 int 0x80
 ret 
 
+getInt:
+call promptUser
+call read
+mov [inInt], eax
+mov ax, [inInt]
+ret
+
 printInt:
 call convertIntToStr
 call write
@@ -95,6 +102,7 @@ readInt resw 1
 tempInt resw 1
 negFlag resb 1
 printString resw 1
+inInt resw 1
 
 section .bss
 
@@ -103,17 +111,20 @@ T1 resw 1
 T2 resw 1
 T3 resw 1
 T4 resw 1
-
-
+T5 resw 1
+T6 resw 1
+T7 resw 1
+T8 resw 1
+T9 resw 1
 section .text 
 _start:
 
 section .text
 
-mov ax, 5
-mov [X], word ax
+call getInt
+mov [X], ax
 
-mov ax, 5
+mov ax, [X]
 mov [I], word ax
 
 W0:

@@ -150,6 +150,7 @@
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="Resources\C1.txt" />
     <Text Include="Resources\GeneratedAssembly.txt" />
     <Text Include="Resources\lexToParse.txt" />
     <Text Include="Resources\Quads.txt" />

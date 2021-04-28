@@ -1,0 +1,10 @@
+CLASS Pgm1 {
+	VAR ans,a,b,c,Bob,Jane;
+	CALL getInt(a);
+	CALL getInt(b);
+	CALL getInt(c);
+	CALL getInt(Bob);
+	CALL getInt(Jane);
+	ans = a * ((Bob + Jane - 10) / 2 * 4)/(b + c);
+	CALL printInt(ans);
+};

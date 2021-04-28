@@ -1,7 +1,7 @@
 CLASS pgm1 {
 	VAR X, Y, I;
-	X = 5;
-	I = 5;
+	CALL getInt(X);
+	I = X;
 	WHILE I > 1 DO
 	{
 		X = X * (I - 1);

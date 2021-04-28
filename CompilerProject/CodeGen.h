@@ -79,7 +79,7 @@ void generateCode() {
 
 	writeAssembly(readFile("Resources/StandardLibrary.txt"));
 	writeAssembly("section .bss\n");
-	writeAssembly("T0 resw 1\nT1 resw 1\nT2 resw 1\nT3 resw 1\nT4 resw 1\n\n");
+	writeAssembly("T0 resw 1\nT1 resw 1\nT2 resw 1\nT3 resw 1\nT4 resw 1\nT5 resw 1\nT6 resw 1\nT7 resw 1\nT8 resw 1\nT9 resw 1");
 	writeAssembly("section .text \n_start:\n");
 	
 	string sectionState = "text";
@@ -180,7 +180,8 @@ void generateCode() {
 				instructions =
 					"mov dx, 0\nmov ax, " + quarters[1] + "\n" +
 					"mov bx, " + quarters[2] + "\n" +
-					"idiv bx";
+					"idiv bx\n" +
+					"mov " + quarters[3] + ", ax\n";
 				break;
 			case 4: // =
 				instructions =
@@ -246,11 +247,20 @@ void generateCode() {
 					quarters[1] = removeBrackets(quarters[1]);
 					instructions = "call " + quarters[1] + "\n";
 				}
-				else {
+				else { // has args
 					quarters[1] = removeBrackets(quarters[1]);
-					instructions =
-						"mov ax, " + quarters[2] + "\n" +
-						"call " + quarters[1] + "\n";
+					if (quarters[1] == "printInt") {
+						instructions =
+							"mov ax, " + quarters[2] + "\n" +
+							"call " + quarters[1] + "\n";
+					}
+					else if (quarters[1] == "getInt") {
+						instructions =
+							"call " + quarters[1] + "\n" +
+							"mov " + quarters[2] + ", ax\n";
+					}
+					
+					
 				}
 			}
 			writeAssembly(instructions);
