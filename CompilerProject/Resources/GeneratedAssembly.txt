@@ -113,31 +113,53 @@ section .text
 mov ax, 0
 mov [X], word ax
 
+mov ax, 0
+mov [Y], word ax
+
 W0:
 
 mov ax, [X]
-cmp ax, 5
-jg L0
+cmp ax, 10
+jge L0
 
 mov ax, [X]
-add ax, 1
+add ax, 4
 mov [T0], ax
 
 mov ax, [T0]
 mov [X], word ax
 
-jmp W0
-L0: NOP
+W1:
 
-mov ax, 10
-sub ax, 3
+mov ax, [Y]
+cmp ax, 3
+jge L1
+
+mov ax, [X]
+sub ax, 1
 mov [T1], ax
 
 mov ax, [T1]
-mov [Y], word ax
+mov [X], word ax
 
 mov ax, [Y]
+add ax, 1
+mov [T2], ax
+
+mov ax, [T2]
+mov [Y], word ax
+
+jmp W1
+L1: NOP
+
+mov ax, 0
+mov [Y], word ax
+
+mov ax, [X]
 call printInt
+
+jmp W0
+L0: NOP
 
 mov ax, 1
 int 0x80
