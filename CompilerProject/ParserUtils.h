@@ -11,14 +11,14 @@ namespace parserUtils {
 	
 
 
-	vector<string> operatorList = { "+", "-", "*", "/", "(", ")", ";", "{", "}", ">", ">=", "WHILE", "=", "DO", "CALL", "<", "<=" };
+	/*vector<string> operatorList = { "+", "-", "*", "/", "(", ")", ";", "{", "}", ">", ">=", "WHILE", "=", "DO", "CALL", "<", "<=" };
 	bool isOperator(string input) {
 		for (int i = 0; i < operatorList.size(); i++) {
 			if (input == operatorList[i])
 				return true;
 		}
 		return false;
-	}
+	}*/
 
 	bool isArithmeticOp(string input) {
 		vector<string> biOpList = { "+", "-", "*", "/", "=" };
@@ -41,7 +41,6 @@ namespace parserUtils {
 	int getValue(string dataName, vector<ParseToken> symbolTable) {
 		for (int i = 0; i < symbolTable.size(); i++) {
 			if (symbolTable[i].symbol == dataName) {
-				cout << "gotten value: " << symbolTable[i].value << endl;
 				return symbolTable[i].value;
 			}
 		}
@@ -235,7 +234,7 @@ namespace parserUtils {
 				writeQuads(quadLine);
 			}
 			else if (thisPop[i] == "CALL") {
-				cout << "Operation: Popped call to " << thisPop[0] << endl;
+				cout << "Operation: Popped call to " << thisPop[1] << "(" << thisPop[0] << ")" << endl;
 				// check if arguments passed
 				if (thisPop.size() > 2) {
 					quadLine = "call," + thisPop[1] + "," + thisPop[0] + ",~";

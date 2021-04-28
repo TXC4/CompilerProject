@@ -110,56 +110,42 @@ _start:
 
 section .text
 
-mov ax, 0
+mov ax, 5
 mov [X], word ax
 
-mov ax, 0
-mov [Y], word ax
+mov ax, 5
+mov [I], word ax
 
 W0:
 
-mov ax, [X]
-cmp ax, 10
-jge L0
+mov ax, [I]
+cmp ax, 1
+jle L0
 
-mov ax, [X]
-add ax, 4
+mov ax, [I]
+sub ax, 1
 mov [T0], ax
 
-mov ax, [T0]
-mov [X], word ax
-
-W1:
-
-mov ax, [Y]
-cmp ax, 3
-jge L1
-
 mov ax, [X]
-sub ax, 1
+mov bx, [T0]
+mul bx
 mov [T1], ax
 
 mov ax, [T1]
 mov [X], word ax
 
-mov ax, [Y]
-add ax, 1
-mov [T2], ax
+mov ax, [I]
+sub ax, 1
+mov [T0], ax
 
-mov ax, [T2]
-mov [Y], word ax
-
-jmp W1
-L1: NOP
-
-mov ax, 0
-mov [Y], word ax
-
-mov ax, [X]
-call printInt
+mov ax, [T0]
+mov [I], word ax
 
 jmp W0
 L0: NOP
+
+mov ax, [X]
+call printInt
 
 mov ax, 1
 int 0x80
@@ -169,4 +155,6 @@ section .bss
 X resw 1
 
 Y resw 1
+
+I resw 1
 

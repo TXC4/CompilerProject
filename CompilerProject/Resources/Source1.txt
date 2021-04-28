@@ -1,0 +1,11 @@
+CLASS pgm1 {
+	VAR X, Y, I;
+	X = 5;
+	I = 5;
+	WHILE I > 1 DO
+	{
+		X = X * (I - 1);
+		I = I - 1;
+	};
+	CALL printInt(X);
+};

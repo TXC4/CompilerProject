@@ -87,7 +87,7 @@ bool isKeyword(string str) {
 }
 
 bool isOperator(string str) {
-	if (str == "=" || str == "," || str == ";" || str == "+" || str == "-" || str == "*" || str == "/" || str == "(" || str == ")" || str == "<" || str == ">" || str == "{" || str == "}" || str == "==" || str == ">=" || str == "<=" || str == "!=" || str == "/*" || str == "*/")
+	if (str == "=" || str == "," || str == ";" || str == "+" || str == "-" || str == "*" || str == "/" || str == "(" || str == ")" || str == "<" || str == ">" || str == "{" || str == "}" || str == "==" || str == ">=" || str == "<=" || str == "!=" || str == "/*" || str == "*/" || str == "CALL" || str == "WHILE" || str == "DO")
 		return true;
 	else
 		return false;

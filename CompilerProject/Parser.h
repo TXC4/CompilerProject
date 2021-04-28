@@ -24,7 +24,7 @@ bool operatorPrecedenceParser(vector<vector<string>> table, vector<string> table
 	int tempCount = 0;
 
 	for (int i = 0; i < tokenString.size(); i++) {
-		if (!parserUtils::isOperator(tokenString[i])) {
+		if (!isOperator(tokenString[i])) {
 			tokenStack.push_back(tokenString[i]);
 		}
 		else {
@@ -46,7 +46,7 @@ bool operatorPrecedenceParser(vector<vector<string>> table, vector<string> table
 			cout << "Relation " << tableHeader[lastOpIndex] << " " << relation << " " << tableHeader[nextOpIndex] << endl;
 			vector<string> thisPop = {};
 			// ';' resets tempCount
-			if (lastOpIndex == 6)
+			if (tableHeader[lastOpIndex] == "=" && tableHeader[nextOpIndex] == ";")
 				tempCount = 0;
 			//reduce
 			if (relation == ">") {
@@ -58,7 +58,7 @@ bool operatorPrecedenceParser(vector<vector<string>> table, vector<string> table
 					do {
 						thisPop.push_back(tokenStack.back());
 						tokenStack.pop_back();
-					} while (!parserUtils::isOperator(tokenStack.back()));
+					} while (!isOperator(tokenStack.back()));
 				}
 				else if (lastPushedOp == ")") {
 					while (tokenStack.back() != "(") {
@@ -93,9 +93,19 @@ bool operatorPrecedenceParser(vector<vector<string>> table, vector<string> table
 					tokenStack.pop_back();
 				}
 
+				bool isCall = false;
+				for (int i = 0; i < tokenStack.size(); i++) {
+					if (tokenStack[i] == "CALL") {
+						isCall = true;
+					}
+				}
+
 				lastPushedOp = tokenStack.back();
-				if (thisPop[1] == "=" || thisPop[0] == "DO" || isRelationalOp(thisPop[1]) || thisPop[1] == "{" || thisPop[1] == "CALL") {
+				if (thisPop[1] == "=" || thisPop[0] == "DO" || isRelationalOp(thisPop[1]) || thisPop[1] == "(" || thisPop[1] == "{" || thisPop[2] == "CALL" || thisPop[1] == "CALL") {
 					operations(thisPop, symbolTable, tempCount);
+				}
+				else if (thisPop[2] == "("){ // throw away parens on CALL
+					tokenStack.push_back(thisPop[1]);
 				}
 				else {
 					//UNCOMMENT AND IN OPERATIONS() RETURN ACTUAL INT VALUE
@@ -103,6 +113,15 @@ bool operatorPrecedenceParser(vector<vector<string>> table, vector<string> table
 					tokenStack.push_back(operations(thisPop, symbolTable, tempCount));
 					tempCount++;
 				}
+
+				// finds highest operator in stack
+				for (int j = tokenStack.size() - 1; j >= 0; j--) {
+					if (isOperator(tokenStack[j])) {
+						lastPushedOp = tokenStack[j];
+						break;
+					}
+				}
+
 				i--;
 			}
 			else if (relation == "<" || relation == "=") {
@@ -122,8 +141,9 @@ bool operatorPrecedenceParser(vector<vector<string>> table, vector<string> table
 			cout << endl;
 		}
 		//print stack
+		cout << "Stack: ";
 		for (int j = 0; j < tokenStack.size(); j++) {
-			cout << tokenStack[j] << endl;
+			cout << tokenStack[j] << ", ";
 		}
 		cout << endl;
 	}
@@ -149,7 +169,7 @@ void parse() {
 		{"<","<","<","<","<", "",">", "", "","<","<", "", "","=", "","<","<"},
 		{"<","<","<","<","<", "",">", "", "","<", "", "", "", "", "", "", ""},
 		{ "", "", "", "","<", "",">","<", "", "", "", "","<", "", "", "", ""},
-		{ "", "", "","<", "", "",">", "", "", "", "", "", "", "", "", "", ""},
+		{ "", "", "", "","<", "",">", "", "", "", "", "", "", "", "", "", ""},
 		{"<","<","<","<","<",">", "", "", "", "", "", "", "",">", "",">",">"},
 		{"<","<","<","<","<",">", "", "", "", "", "", "", "",">", "",">",">"},
 	};
