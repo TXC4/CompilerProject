@@ -239,6 +239,11 @@ namespace parserUtils {
 				quadLine = "whilePop," + popLabel("whileLabelStack") + "," + popLabel("labelStack") + ",~";
 				writeQuads(quadLine);
 			}
+			else if (thisPop[i] == "THEN") {
+				cout << "Operation: Popped if\n";
+				quadLine = "ifPop," + popLabel("labelStack") + ",~,~";
+				writeQuads(quadLine);
+			}
 			else if (thisPop[i] == "CALL") {
 				cout << "Operation: Popped call to " << thisPop[1] << "(" << thisPop[0] << ")" << endl;
 				// check if arguments passed

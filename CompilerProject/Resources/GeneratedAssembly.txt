@@ -122,47 +122,26 @@ _start:
 
 section .text
 
-call getInt
-mov [X], ax
+mov ax, 0
+mov [X], word ax
 
-mov ax, [X]
-mov [I], word ax
-
-W0:
 
 mov ax, 0
 mov [relationFlag], ax
-mov ax, [I]
-cmp ax, 1
+mov ax, 3
+cmp ax, 5
 jle L1
 mov ax, 1
 mov [relationFlag], ax
 L1:
 
-mov ax, [relationFlag]
+mov eax, [relationFlag]
 cmp ax, 0
 je L0
-mov ax, [I]
-sub ax, 1
-mov [T0], ax
-
-mov ax, [X]
-mov bx, [T0]
-mul bx
-mov [T1], ax
-
-mov ax, [T1]
+mov ax, 1
 mov [X], word ax
 
-mov ax, [I]
-sub ax, 1
-mov [T0], ax
-
-mov ax, [T0]
-mov [I], word ax
-
-jmp W0
-L0: NOP
+L0:
 
 mov ax, [X]
 call printInt
@@ -173,8 +152,4 @@ int 0x80
 section .bss
 
 X resw 1
-
-Y resw 1
-
-I resw 1
 

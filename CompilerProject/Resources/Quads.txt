@@ -1,18 +1,12 @@
-call,getInt,X,~
-=,I,X,~
-whilePush,W0,L0,~
->,I,1,L1
-doPush,L0,~,~
--,I,1,T0
-*,X,T0,T1
-=,X,T1,~
--,I,1,T0
-=,I,T0,~
-whilePop,W0,L0,~
+=,X,0,~
+ifPush,L0,~,~
+>,3,5,L1
+thenPush,L0,~,~
+=,X,1,~
+ifPop,L0,~,~
 call,printInt,X,~
 bss,resw,X,~
-bss,resw,Y,~
-bss,resw,I,~
+
 
 
 

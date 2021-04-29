@@ -48,7 +48,7 @@ bool operatorPrecedenceParser(vector<vector<string>> table, vector<string> table
 			// ';' resets tempCount
 			if (tableHeader[lastOpIndex] == "=" && tableHeader[nextOpIndex] == ";")
 				tempCount = 0;
-			//reduce
+			// Find handle in stack and reduce
 			if (relation == ">") {
 				if (isArithmeticOp(lastPushedOp) || isRelationalOp(lastPushedOp)) {
 					while (tokenStack.back() != lastPushedOp) {
@@ -84,6 +84,14 @@ bool operatorPrecedenceParser(vector<vector<string>> table, vector<string> table
 					thisPop.push_back(tokenStack.back());
 					tokenStack.pop_back();
 				}
+				else if (lastPushedOp == "THEN" && tableHeader[nextOpIndex] == ";") {
+					while (tokenStack.back() != "IF") {
+						thisPop.push_back(tokenStack.back());
+						tokenStack.pop_back();
+					}
+					thisPop.push_back(tokenStack.back());
+					tokenStack.pop_back();
+				}
 				else if (lastPushedOp == "CALL") {
 					while (tokenStack.back() != "CALL") {
 						thisPop.push_back(tokenStack.back());
@@ -101,7 +109,7 @@ bool operatorPrecedenceParser(vector<vector<string>> table, vector<string> table
 				}
 
 				lastPushedOp = tokenStack.back();
-				if (thisPop[1] == "=" || thisPop[0] == "DO" || isRelationalOp(thisPop[1]) || thisPop[1] == "(" || thisPop[1] == "{" || thisPop[2] == "CALL" || thisPop[1] == "CALL") {
+				if (thisPop[1] == "=" || thisPop[0] == "DO"|| thisPop[0] == "THEN" || isRelationalOp(thisPop[1]) || thisPop[1] == "(" || thisPop[1] == "{" || thisPop[2] == "CALL" || thisPop[1] == "CALL" ) {
 					operations(thisPop, symbolTable, tempCount);
 				}
 				else if (thisPop[2] == "("){ // throw away parens on CALL
@@ -139,7 +147,17 @@ bool operatorPrecedenceParser(vector<vector<string>> table, vector<string> table
 					string quadLine = "doPush," + labelStack.back() + ",~,~";
 					writeQuads(quadLine);
 				}
-
+				// "IF" pushed to stack
+				else if (tokenString[i] == "IF") {
+					string generalLabel = pushLabel("labelStack");
+					string quadLine = "ifPush," + generalLabel + ",~,~";
+					writeQuads(quadLine);
+				}
+				// "THEN" pushed to stack
+				else if (tokenString[i] == "THEN") {
+					string quadLine = "thenPush," + labelStack.back() + ",~,~";
+					writeQuads(quadLine);
+				}
 			}
 			else {
 				cout << "No relation\n";
@@ -159,25 +177,27 @@ bool operatorPrecedenceParser(vector<vector<string>> table, vector<string> table
 void parse() {
 	vector<ParseToken> symbolTable = readSymbolTable();
 
-	vector<string> completeTableHeader = { "+", "-", "*", "/", "(", ")", ";", "{", "}", ">", ">=", "WHILE", "=", "DO", "CALL", "<", "<=" };
+	vector<string> completeTableHeader = { "+", "-", "*", "/", "(", ")", ";", "{", "}", ">", ">=", "WHILE", "=", "DO", "CALL", "<", "<=", "IF", "THEN" };
 	vector<vector<string>> completeTable = {
-		{">",">","<","<","<",">",">", "",">", "", "", "", "", "", "", "", ""},
-		{">",">","<","<","<",">",">", "",">", "", "", "", "", "", "", "", ""},
-		{">",">",">",">","<",">",">", "",">", "", "", "", "", "", "", "", ""},
-		{">",">",">",">","<",">",">", "",">", "", "", "", "", "", "", "", ""},
-		{"<","<","<","<","<","=", "", "", "","<","<", "", "", "", "","<","<"},
-		{">",">",">",">", "",">",">", "", "", "", "", "", "", "", "", "", ""},
-		{"<","<","<","<","<", "", "","<", "", "", "","<","<", "","<", "", ""},
-		{"<","<","<","<","<", "", "",">","=", "", "","<","<", "","<", "", ""},
-		{">",">",">",">",">", "",">", "",">", "", "","<", "", "","<", "", ""},
-		{"<","<","<","<","<",">", "", "", "", "", "", "", "",">", "",">",">"},
-		{"<","<","<","<","<",">", "", "", "", "", "", "", "",">", "",">",">"},
-		{"<","<","<","<","<", "",">", "", "","<","<", "", "","=", "","<","<"},
-		{"<","<","<","<","<", "",">", "", "","<", "", "", "", "", "", "", ""},
-		{ "", "", "", "","<", "",">","<", "", "", "", "","<", "", "", "", ""},
-		{ "", "", "", "","<", "",">", "", "", "", "", "", "", "", "", "", ""},
-		{"<","<","<","<","<",">", "", "", "", "", "", "", "",">", "",">",">"},
-		{"<","<","<","<","<",">", "", "", "", "", "", "", "",">", "",">",">"},
+		{">",">","<","<","<",">",">", "",">", "", "", "", "", "", "", "", "", "", ""},
+		{">",">","<","<","<",">",">", "",">", "", "", "", "", "", "", "", "", "", ""},
+		{">",">",">",">","<",">",">", "",">", "", "", "", "", "", "", "", "", "", ""},
+		{">",">",">",">","<",">",">", "",">", "", "", "", "", "", "", "", "", "", ""},
+		{"<","<","<","<","<","=", "", "", "","<","<", "", "", "", "","<","<", "", ""},
+		{">",">",">",">", "",">",">", "", "", "", "", "", "", "", "", "", "", "", ""},
+		{"<","<","<","<","<", "", "","<", "", "", "","<","<", "","<", "", "","<", ""},
+		{"<","<","<","<","<", "", "",">","=", "", "","<","<", "","<", "", "","<", ""},
+		{">",">",">",">",">", "",">", "",">", "", "","<", "", "","<", "", "","<", ""},
+		{"<","<","<","<","<",">", "", "", "", "", "", "", "",">", "",">",">", "",">"},
+		{"<","<","<","<","<",">", "", "", "", "", "", "", "",">", "",">",">", "",">"},
+		{"<","<","<","<","<", "",">", "", "","<","<", "", "","=", "","<","<", "","="},
+		{"<","<","<","<","<", "",">", "", "","<", "", "", "", "", "", "", "", "", ""},
+		{ "", "", "", "","<", "",">","<", "", "", "", "","<", "", "", "", "", "", ""},
+		{ "", "", "", "","<", "",">", "", "", "", "", "", "", "", "", "", "", "", ""},
+		{"<","<","<","<","<",">", "", "", "", "", "", "", "",">", "",">",">", "",">"},
+		{"<","<","<","<","<",">", "", "", "", "", "", "", "",">", "",">",">", "",">"},
+		{"<","<","<","<","<", "",">", "", "","<","<","<", "", "", "","<","<", "","="},
+		{ "", "", "", "","<", "",">","<", "", "", "", "","<", "", "", "", "", "", ""},
 	};
 
 	vector<string> tokenString = readFromLex();

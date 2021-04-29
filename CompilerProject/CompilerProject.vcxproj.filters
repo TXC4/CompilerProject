@@ -63,6 +63,9 @@
     <Text Include="Resources\C1.txt">
       <Filter>Resources</Filter>
     </Text>
+    <Text Include="Resources\C2.txt">
+      <Filter>Resources</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\table.xlsx">

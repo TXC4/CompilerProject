@@ -80,14 +80,14 @@ void matrixPrintString(vector<vector<string>> matrix) {
 }
 
 bool isKeyword(string str) {
-	if (str == "CONST" || str == "IF" || str == "VAR" || str == "THEN" || str == "PROCEDURE" || str == "WHILE" || str == "CALL" || str == "DO" || str == "ODD" || str == "CLASS")
+	if (str == "CONST" || str == "IF" || str == "VAR" || str == "THEN" || str == "PROCEDURE" || str == "WHILE" || str == "CALL" || str == "DO" || str == "ODD" || str == "CLASS" || str == "IF" || str == "THEN")
 		return true;
 	else
 		return false;
 }
 
 bool isOperator(string str) {
-	if (str == "=" || str == "," || str == ";" || str == "+" || str == "-" || str == "*" || str == "/" || str == "(" || str == ")" || str == "<" || str == ">" || str == "{" || str == "}" || str == "==" || str == ">=" || str == "<=" || str == "!=" || str == "/*" || str == "*/" || str == "CALL" || str == "WHILE" || str == "DO")
+	if (str == "=" || str == "," || str == ";" || str == "+" || str == "-" || str == "*" || str == "/" || str == "(" || str == ")" || str == "<" || str == ">" || str == "{" || str == "}" || str == "==" || str == ">=" || str == "<=" || str == "!=" || str == "/*" || str == "*/" || str == "CALL" || str == "WHILE" || str == "DO" || str == "IF" || str == "THEN")
 		return true;
 	else
 		return false;
