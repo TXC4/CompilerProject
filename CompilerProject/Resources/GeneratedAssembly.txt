@@ -122,14 +122,20 @@ _start:
 
 section .text
 
-mov ax, 0
-mov [X], word ax
+call getInt
+mov [X], ax
+
+call getInt
+mov [Y], ax
+
+call getInt
+mov [Z], ax
 
 
 mov ax, 0
 mov [relationFlag], ax
-mov ax, 3
-cmp ax, 5
+mov ax, [X]
+cmp ax, [Y]
 jle L1
 mov ax, 1
 mov [relationFlag], ax
@@ -138,13 +144,73 @@ L1:
 mov eax, [relationFlag]
 cmp ax, 0
 je L0
+
+mov ax, 0
+mov [relationFlag], ax
+mov ax, [X]
+cmp ax, [Z]
+jle L3
 mov ax, 1
-mov [X], word ax
+mov [relationFlag], ax
+L3:
+
+mov eax, [relationFlag]
+cmp ax, 0
+je L2
+mov ax, [X]
+call printInt
+
+L2:
 
 L0:
 
-mov ax, [X]
+
+mov ax, 0
+mov [relationFlag], ax
+mov ax, [Y]
+cmp ax, [X]
+jle L5
+mov ax, 1
+mov [relationFlag], ax
+L5:
+
+mov eax, [relationFlag]
+cmp ax, 0
+je L4
+
+mov ax, 0
+mov [relationFlag], ax
+mov ax, [Y]
+cmp ax, [X]
+jle L7
+mov ax, 1
+mov [relationFlag], ax
+L7:
+
+mov eax, [relationFlag]
+cmp ax, 0
+je L6
+
+mov ax, 0
+mov [relationFlag], ax
+mov ax, [Z]
+cmp ax, [Y]
+jle L9
+mov ax, 1
+mov [relationFlag], ax
+L9:
+
+mov eax, [relationFlag]
+cmp ax, 0
+je L8
+mov ax, [Z]
 call printInt
+
+L8:
+
+L6:
+
+L4:
 
 mov ax, 1
 int 0x80
@@ -152,4 +218,10 @@ int 0x80
 section .bss
 
 X resw 1
+
+Y resw 1
+
+Z resw 1
+
+Temp resw 1
 

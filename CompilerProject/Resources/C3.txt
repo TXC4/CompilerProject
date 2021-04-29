@@ -1,0 +1,29 @@
+CLASS pgm {
+
+	VAR X, Y, Z, Temp;
+
+	CALL getInt(X);
+	CALL getInt(Y);
+	CALL getInt(Z);
+
+	IF X > Y THEN
+	{
+		IF X > Z THEN
+		{
+			CALL printInt(X);
+		};
+	};
+
+	IF Y > X THEN {
+		IF Y > Z {
+			CALL printInt(Y);
+		};
+	};
+
+	IF Z > X THEN {
+		IF Z > Y THEN {
+			CALL printInt(Z);
+		};
+	};
+
+};

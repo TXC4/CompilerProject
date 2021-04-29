@@ -152,6 +152,8 @@
   <ItemGroup>
     <Text Include="Resources\C1.txt" />
     <Text Include="Resources\C2.txt" />
+    <Text Include="Resources\C3.txt" />
+    <Text Include="Resources\C4.txt" />
     <Text Include="Resources\GeneratedAssembly.txt" />
     <Text Include="Resources\lexToParse.txt" />
     <Text Include="Resources\Quads.txt" />

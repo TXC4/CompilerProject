@@ -1,15 +1,32 @@
-=,X,0,~
+call,getInt,X,~
+call,getInt,Y,~
+call,getInt,Z,~
 ifPush,L0,~,~
->,3,5,L1
+>,X,Y,L1
 thenPush,L0,~,~
-=,X,1,~
-ifPop,L0,~,~
+ifPush,L2,~,~
+>,X,Z,L3
+thenPush,L2,~,~
 call,printInt,X,~
+ifPop,L2,~,~
+ifPop,L0,~,~
+ifPush,L4,~,~
+>,Y,X,L5
+thenPush,L4,~,~
+ifPush,L6,~,~
+>,Y,X,L7
+thenPush,L6,~,~
+ifPush,L8,~,~
+>,Z,Y,L9
+thenPush,L8,~,~
+call,printInt,Z,~
+ifPop,L8,~,~
+ifPop,L6,~,~
+ifPop,L4,~,~
 bss,resw,X,~
-
-
-
-
+bss,resw,Y,~
+bss,resw,Z,~
+bss,resw,Temp,~
 
 
 

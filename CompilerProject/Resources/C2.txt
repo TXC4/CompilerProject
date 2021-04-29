@@ -1,9 +1,13 @@
 CLASS pgm {
-	VAR X;
-	X = 0;
-	IF 3 > 5 THEN
+	VAR X, Y;
+	CALL getInt(X);
+	CALL getInt(Y);
+	IF X > Y THEN
 	{
-		X = 1;
+		CALL printInt(X);
 	};
-	CALL printInt(X);
+	IF Y > X THEN
+	{
+		CALL printInt(Y);
+	};
 };
