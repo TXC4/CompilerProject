@@ -1,0 +1,20 @@
+CLASS pgm1 {
+
+	VAR i, j, input, answer;
+	CALL getInt(input);
+	i = 1;
+	j = i;
+	WHILE i <= input DO
+	{
+		j = i;
+		answer = j;
+		WHILE j > 1 DO
+		{
+			j = j - 1;
+			answer = answer * j;
+		};
+
+		i = i + 1;
+	};
+	CALL printInt(answer);
+};

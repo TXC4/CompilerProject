@@ -8,7 +8,7 @@
 
 using namespace std;
 
-string textFile = "Resources/C3.txt";
+string textFile = "Resources/B5.txt";
 string csvFile = "Resources/table.xlsx";
 string toParseText = "Resources/lexToParse.txt";
 

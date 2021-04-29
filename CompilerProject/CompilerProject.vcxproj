@@ -150,6 +150,8 @@
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="Resources\B5.txt" />
+    <Text Include="Resources\B6.txt" />
     <Text Include="Resources\C1.txt" />
     <Text Include="Resources\C2.txt" />
     <Text Include="Resources\C3.txt" />
