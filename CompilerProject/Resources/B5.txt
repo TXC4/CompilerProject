@@ -1,4 +1,5 @@
 CLASS pgm1 {
+	CONST constForShow = 100;
 
 	VAR i, j, input, answer;
 	CALL getInt(input);

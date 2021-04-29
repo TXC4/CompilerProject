@@ -1,4 +1,5 @@
 CLASS pgm1 {
+	CONST const = 5;
 	VAR X, Y, I;
 	CALL getInt(X);
 	I = X;
