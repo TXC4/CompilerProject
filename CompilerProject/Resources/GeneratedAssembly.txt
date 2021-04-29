@@ -103,6 +103,7 @@ tempInt resw 1
 negFlag resb 1
 printString resw 1
 inInt resw 1
+relationFlag resb 1
 
 section .bss
 
@@ -129,10 +130,18 @@ mov [I], word ax
 
 W0:
 
+mov ax, 0
+mov [relationFlag], ax
 mov ax, [I]
 cmp ax, 1
-jle L0
+jle L1
+mov ax, 1
+mov [relationFlag], ax
+L1:
 
+mov ax, [relationFlag]
+cmp ax, 0
+je L0
 mov ax, [I]
 sub ax, 1
 mov [T0], ax

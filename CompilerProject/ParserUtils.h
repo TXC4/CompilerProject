@@ -86,16 +86,20 @@ namespace parserUtils {
 	// Label stacks
 	deque<string> whileLabelStack;
 	deque<string> labelStack;
+	int whileLabelStackCount = 0;
+	int labelStackCount = 0;
 
 	string pushLabel(string dequeStack) {
 		string label = "";
 		if (dequeStack == "whileLabelStack") {
-			label = "W" + to_string(whileLabelStack.size());
+			label = "W" + to_string(whileLabelStackCount);
 			whileLabelStack.push_back(label);
+			whileLabelStackCount++;
 		}
 		else if (dequeStack == "labelStack") {
-			label = "L" + to_string(labelStack.size());
+			label = "L" + to_string(labelStackCount);
 			labelStack.push_back(label);
+			labelStackCount++;
 		}
 		return label;
 	}
@@ -212,7 +216,9 @@ namespace parserUtils {
 
 				// quad generation
 				string tempStr = thisPop[i];
+				pushLabel("labelStack");
 				quadLine = tempStr + "," + thisPop[2] + "," + thisPop[0] + "," + labelStack.back();
+				popLabel("labelStack");
 				writeQuads(quadLine);
 
 

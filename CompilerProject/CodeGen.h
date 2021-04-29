@@ -51,7 +51,7 @@ string readFile(string fileName) {
 }
 
 // operators
-vector<string>operators = { "+", "-", "*", "/", "=", ">", "<", ">=", "<=", "whilePush", "whilePop", "printLabel", "data", "bss", "call" };
+vector<string>operators = { "+", "-", "*", "/", "=", ">", "<", ">=", "<=", "whilePush", "whilePop", "printLabel", "data", "bss", "call", "doPush" };
 int getOperatorIndex(string strData) {
 	for (int i = 0; i < operators.size(); i++) {
 		if (operators[i] == strData) {
@@ -191,30 +191,34 @@ void generateCode() {
 			case 5: // >
 				quarters[3] = removeBrackets(quarters[3]);
 				instructions =
-					"mov ax, " + quarters[1] + "\n" +
+					"mov ax, 0\nmov [relationFlag], ax\nmov ax, " + quarters[1] + "\n" +
 					"cmp ax, " + quarters[2] + "\n" +
-					"jle " + quarters[3] + "\n";
+					"jle " + quarters[3] + "\nmov ax, 1\nmov [relationFlag], ax\n" +
+					quarters[3] + ":\n";
 				break;
 			case 6: // <
 				quarters[3] = removeBrackets(quarters[3]);
 				instructions =
-					"mov ax, " + quarters[1] + "\n" +
+					"mov ax, 0\nmov [relationFlag], ax\nmov ax, " + quarters[1] + "\n" +
 					"cmp ax, " + quarters[2] + "\n" +
-					"jge " + quarters[3] + "\n";
+					"jge " + quarters[3] + "\nmov ax, 1\nmov [relationFlag], ax\n" +
+					quarters[3] + ":\n";;
 				break;
 			case 7: // >=
 				quarters[3] = removeBrackets(quarters[3]);
 				instructions =
-					"mov ax, " + quarters[1] + "\n" +
+					"mov ax, 0\nmov [relationFlag], ax\nmov ax, " + quarters[1] + "\n" +
 					"cmp ax, " + quarters[2] + "\n" +
-					"jl " + quarters[3] + "\n";
+					"jl " + quarters[3] + "\nmov ax, 1\nmov [relationFlag], ax\n" +
+					quarters[3] + ":\n";;
 				break;
 			case 8: // <=
 				quarters[3] = removeBrackets(quarters[3]);
 				instructions =
-					"mov ax, " + quarters[1] + "\n" +
+					"mov ax, 0\nmov [relationFlag], ax\nmov ax, " + quarters[1] + "\n" +
 					"cmp ax, " + quarters[2] + "\n" +
-					"jg " + quarters[3] + "\n";
+					"jg " + quarters[3] + "\nmov ax, 1\nmov [relationFlag], ax\n" +
+					quarters[3] + ":\n";;
 				break;
 			case 9: // whilePush
 				quarters[1] = removeBrackets(quarters[1]);
@@ -262,6 +266,12 @@ void generateCode() {
 					
 					
 				}
+				break;
+			case 15:
+				quarters[1] = removeBrackets(quarters[1]);
+				instructions =
+					"mov ax, [relationFlag]\ncmp ax, 0\nje " +
+					quarters[1];
 			}
 			writeAssembly(instructions);
 		}

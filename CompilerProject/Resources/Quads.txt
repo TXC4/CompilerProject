@@ -1,7 +1,8 @@
 call,getInt,X,~
 =,I,X,~
 whilePush,W0,L0,~
->,I,1,L0
+>,I,1,L1
+doPush,L0,~,~
 -,I,1,T0
 *,X,T0,T1
 =,X,T1,~

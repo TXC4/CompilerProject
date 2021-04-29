@@ -134,6 +134,12 @@ bool operatorPrecedenceParser(vector<vector<string>> table, vector<string> table
 					string quadLine = "whilePush," + whileLabel + "," + generalLabel + ",~";
 					writeQuads(quadLine);
 				}
+				// "DO" pushed to stack
+				else if (tokenString[i] == "DO") {
+					string quadLine = "doPush," + labelStack.back() + ",~,~";
+					writeQuads(quadLine);
+				}
+
 			}
 			else {
 				cout << "No relation\n";

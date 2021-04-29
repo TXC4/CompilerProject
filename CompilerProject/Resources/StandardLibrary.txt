@@ -103,3 +103,4 @@ tempInt resw 1
 negFlag resb 1
 printString resw 1
 inInt resw 1
+relationFlag resb 1
